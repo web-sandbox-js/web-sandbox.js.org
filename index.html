@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Sandbox</title>
+    <title>WebSandbox.js</title>
     <style>
         body {
-          background: #f5f5f5;
+            background: #f5f5f5;
         }
 
         web-sandbox:not(:defined) {
-          display: none;
+            display: none;
         }
-  
+
         web-sandbox:defined {
-          display: block;
+            display: block;
         }
-        
+
         [id=source-text] {
             width: 662px;
             min-width: 662px;
             max-width: 662px;
             box-sizing: border-box;
             background-color: #000;
-            color:#FFF;
+            color: #FFF;
         }
 
         web-sandbox[name=sandbox-evaluate] {
@@ -33,48 +34,30 @@
             border: 3px dashed #bcc9bd;
             border-radius: 10px;
         }
-      </style>
+    </style>
 </head>
+
 <body>
-    <h1>Web Sandbox</h1>
+    <h1>WebSandbox.js</h1>
     <p>Input:</p>
     <p>
-        <button onclick="innerExamples('basic')">basic</button>
-        <button onclick="innerExamples('websandbox-environment')">websandbox environment</button>
-        <button onclick="innerExamples('canvas')">canvas</button>
-        <button onclick="innerExamples('systemjs')">systemjs</button>
-        <button onclick="innerExamples('vue-todomvc')">vue todomvc</button>
-        <button onclick="innerExamples('child-websandbox')">child websandbox</button>
+        <button onclick="innerExamples('basic')">Basic</button>
+        <button onclick="innerExamples('websandbox-environment')">DOM Api</button>
+        <button onclick="innerExamples('canvas')">Canvas</button>
+        <button onclick="innerExamples('systemjs')">Systemjs</button>
+        <button onclick="innerExamples('vue-todomvc')">Vue.js Todo MVC</button>
+        <button onclick="innerExamples('child-websandbox')">Child WebSandbox</button>
         <!-- <button onclick="innerExamples('mutation-observer')">MutationObserver</button> -->
-        <button onclick="innerExamples('sandbox-security-error')">SandboxSecurityError</button>
+        <button onclick="innerExamples('sandbox-security-error')">XSS</button>
     </p>
     <div>
-        <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" id="source-text" rows="20" cols="80"></textarea>
+        <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" id="source-text"
+            rows="20" cols="80"></textarea>
     </div>
     <p><button id="run">Evaluate</button></p>
     <p>WebSandbox Output:</p>
     <web-sandbox name="sandbox-evaluate"></web-sandbox>
-    <p>
-      <small>
-        Note: you can look in the console to inspect the original output of the evaluation.
-      </small>
-    </p>
     <script type="module" src="/dist/web-sandbox.esm.js"></script>
-
-    <!-- <script src="/node_modules/monaco-editor/min/vs/loader.js"></script>
-    <script>
-        require.config({ paths: { 'vs': '/node_modules/monaco-editor/min/vs' }});
-        require(['vs/editor/editor.main'], function() {
-            var editor = monaco.editor.create(document.getElementById('source-container'), {
-                value: [
-                    'function x() {',
-                    '\tconsole.log("Hello world!");',
-                    '}'
-                ].join('\n'),
-                language: 'javascript'
-            });
-        });
-    </script> -->
     <script type="module">
         customElements.whenDefined('web-sandbox').then(() => {
             const sourceElement = document.getElementById('source-text');
@@ -85,13 +68,13 @@
                 const url = `/examples/${id}/index.js`;
                 fetch(url).then(res => {
                     if (!res.ok) {
-                    throw Error([res.status, res.statusText, url].join(', '));
+                        throw Error([res.status, res.statusText, url].join(', '));
                     }
                     const jsContentTypeRegEx = /^(text|application)\/(x-)?javascript(;|$)/;
                     const contentType = res.headers.get('content-type');
 
                     if (!contentType || !jsContentTypeRegEx.test(contentType)) {
-                    throw Error(contentType);
+                        throw Error(contentType);
                     }
 
                     return res.text().then(source => {
@@ -100,7 +83,7 @@
                         }
                         sourceElement.value = source;
                     });
-                    
+
                 });
             };
 
@@ -108,23 +91,17 @@
                 const source = sourceElement.value;
                 let result, output;
 
-                //try {
-                    result = sandbox.evaluate(source);
-                    localStorage.setItem('source', source);
-                // } catch (e) {
-                //     result = `Error: ${e}`;
-                // }
+                result = sandbox.evaluate(source);
+                localStorage.setItem('source', source);
 
-                // try {
-                //     output =
-                //     typeof result === 'function' ? result.toString() : JSON.stringify(result);
-                // } catch (e) {
-                //     output = `Error trying to serialize the result: ${e}\nOriginal Object: ${result}`;
-                // }
-
-                // console.log(result);
             };
         })
     </script>
+    <p>
+        <small>
+            Note: you can look in the console to inspect the original output of the evaluation.
+        </small>
+    </p>
 </body>
+
 </html>
