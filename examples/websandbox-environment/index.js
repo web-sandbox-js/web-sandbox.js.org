@@ -128,8 +128,7 @@ style.textContent = `
   }
   `;
 
-const template = document.createElement('div');
-template.innerHTML = api
+const template = api
   .map(
     ({ name, type, prototype, property }) => `
     <details open>
@@ -154,4 +153,4 @@ template.innerHTML = api
   .join('');
 
 document.head.appendChild(style);
-document.body.appendChild(template);
+document.body.innerHTML = template;

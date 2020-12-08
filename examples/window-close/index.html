@@ -10,7 +10,7 @@
 
   <web-sandbox src="./index.js" name="demo" onload="window.sandbox = this.contentWindow"></web-sandbox>
   <button id="close">close</button>
-  <script type="module" src="/src/index.js"></script>
+  <script type="module" src="/dist/web-sandbox.esm.js"></script>
   <script type="module">
     customElements.whenDefined('web-sandbox').then(() => {
       const websandbox = document.querySelector('web-sandbox');

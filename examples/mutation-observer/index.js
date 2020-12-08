@@ -1,10 +1,9 @@
-const template = document.createElement('div');
-template.innerHTML = `
+const template = `
     <div><button id="add">Add Item</button></div>
     <textarea id="log" readonly style="width: 100%; ox-sizing: border-box; height: 200px; overflow: auto"></textarea>
     <ol id="list"></ol>
 `;
-document.body.appendChild(template);
+document.body.innerHTML = template;
 
 document.querySelector('#add').addEventListener('click', () => {
   const li = document.createElement('li');

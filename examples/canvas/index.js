@@ -1,5 +1,4 @@
-const template = document.createElement('div');
-template.innerHTML = `
+const template = `
   <div id="canvasButtonsDiv">
     <button id="existingCanvasBtn">Draw on already existing canvas</button>
     <button id="newCanvasBtn">Create new canvas and draw on it</button>
@@ -11,7 +10,7 @@ template.innerHTML = `
   <div id="newCanvasDiv"></div>
   </div>
 `;
-document.body.appendChild(template);
+document.body.innerHTML = template;
 
 const existingCanvasBtn = document.getElementById('existingCanvasBtn');
 const newCanvasBtn = document.getElementById('newCanvasBtn');
