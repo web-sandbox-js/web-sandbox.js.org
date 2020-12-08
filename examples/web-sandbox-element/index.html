@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>demo</title>
+</head>
+
+<body>
+  <h1>web-sandbox / demo</h1>
+
+  <web-sandbox name="demo" src="/examples/web-sandbox-element/demo.js" onload="window.sandbox = this.contentWindow">
+    <script type="text/web-sandbox-script"
+      src="https://cdn.dancf.com/gaoding/static/www/js/manifest.06202657.js"></script>
+    <button slot="tab-label">选项卡1</button>
+    <button slot="tab-label">选项卡2</button>
+    <button slot="tab-label">选项卡3</button>
+    <div slot="tab-content">
+      <p>内容一</p>
+    </div>
+    <div slot="tab-content">
+      <p>内容二</p>
+    </div>
+    <div slot="tab-content">
+      <p>内容三</p>
+    </div>
+    <div>没有指定内容的元素</div>
+  </web-sandbox>
+  <br>
+  <web-sandbox name="demo2" src="/examples/web-sandbox-element/demo.js" onload="window.sandbox2 = this.contentWindow"
+    style="width: 300px">
+    <div slot="slot-demo">
+      <p>我是替换后的</p>
+    </div>
+    <p>你好呀</p>
+  </web-sandbox>
+
+  <script type="module" src="/src/index.js"></script>
+
+  <!-- <template id="my-tpl">
+      <style>
+        slot {
+          color: red;
+          background-color: #666;
+          padding: 5px;
+        }
+      </style>
+      <slot name="slot-demo"><p>默认值</p></slot>
+    </template>
+    <script>
+      onload = () => {
+        const tpl = document.querySelector('#my-tpl');
+        document.querySelector('web-sandbox').shadowRoot.appendChild(tpl.content.cloneNode(true));
+      }
+    </script> -->
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+html {
+    border: 1px solid red;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    height: auto;
+    max-height: auto;
+}
+
+body {
+    background-color: azure;
+}

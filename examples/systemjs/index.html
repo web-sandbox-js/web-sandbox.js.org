@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>demo</title>
+  <style>
+    web-sandbox:not(:defined) {
+      display: none;
+    }
+
+    web-sandbox:defined {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>web-sandbox / demo</h1>
+
+  <web-sandbox id="systemjs-demo" src="./index.js" name="demo" onload="window.sandbox = this.contentWindow">
+  </web-sandbox>
+  <script type="module" src="../../src/index.js"></script>
+  <!-- <script type="module">
+        customElements.whenDefined('web-sandbox').then(() => {
+            const websandbox = document.getElementById('systemjs-demo');
+            websandbox.evaluate(`
+                const importmap = document.createElement('script');
+                importmap.type = 'systemjs-importma';
+                importmap.contentText = \`{
+                  "imports": {
+                    "neptune": "./neptune.js"
+                  }
+                }\`;
+                document.head.appendChild(importmap);
+
+                const app = document.createElement('script');
+                app.type = 'systemjs-module';
+                app.src = 'import:neptune';
+                document.head.appendChild(app);
+
+                const loader = document.createElement('script');
+                loader.src = '/node_modules/systemjs/dist/s.js';
+                document.head.appendChild(loader);
+            `);
+        })
+      </script> -->
+</body>
+
+</html>
