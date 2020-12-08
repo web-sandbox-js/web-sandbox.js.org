@@ -143,7 +143,7 @@ const template = api
       ${property
         .map(
           ({ name, descriptor }) => `
-      <dd>${name}${typeof descriptor.value === 'function' ? '()' : ''}</dd>
+      <dd>#${name}${typeof descriptor.value === 'function' ? '()' : ''}</dd>
       `
         )
         .join('')}
