@@ -1,6 +1,7 @@
 const template = `
-    <div><button id="add">Add Item</button></div>
-    <textarea id="log" readonly style="width: 100%; ox-sizing: border-box; height: 200px; overflow: auto"></textarea>
+    <p>Log:</p>
+    <textarea id="log" readonly style="width: 100%; ox-sizing: border-box; height: 100px; overflow: auto"></textarea>
+    <div><button id="add">Add Node</button></div>
     <ol id="list"></ol>
 `;
 document.body.innerHTML = template;
