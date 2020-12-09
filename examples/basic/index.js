@@ -1,5 +1,5 @@
 const style = document.createElement('style');
-style.textContent = `html { color: red }`;
+style.textContent = `html { color: #003cb1 }`;
 document.head.appendChild(style);
 
 const hello = document.createElement('h1');

@@ -89,7 +89,6 @@ style.textContent = `
       margin-bottom: 1rem;
       font-size: 14px;
   }
-  /* 隐藏默认三角 */
   ::-webkit-details-marker {
       display: none;
   }

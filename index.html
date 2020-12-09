@@ -8,14 +8,52 @@
     <style>
         body {
             background: #f5f5f5;
+            text-align: center;
+        }
+        h1 {
+            margin: 80px 0 0 0;
+            font-size: 3em;
+        }
+        h1, h2 {
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #003cb1;
+        }
+        h2 {
+            margin: 0 0 60px 0;
+            line-height: 1.2em;
+            font-size: 1em;
+            color: #666;
+        }
+        .main-button {
+            padding: 0.75em 2em;
+            border-radius: 2em;
+            display: inline-block;
+            transition: all 0.15s ease;
+            box-sizing: border-box;
+            margin: 1em 0;
+            font-size: 1.05em;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: #003cb1;
+            border: 1px solid #003cb1;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 500;
         }
 
+        web-sandbox {
+            text-align: left;
+        }
         web-sandbox:not(:defined) {
             display: none;
         }
 
         web-sandbox:defined {
-            display: block;
+            display: inline-block;
         }
 
         [id=source-text] {
@@ -31,7 +69,7 @@
             min-height: 306px;
             width: 662px;
             box-sizing: border-box;
-            border: 3px dashed #bcc9bd;
+            border: 3px dashed #003cb1;
             border-radius: 10px;
         }
     </style>
@@ -39,10 +77,14 @@
 
 <body>
     <h1>WebSandbox.js</h1>
+    <h2>JavaScript's DOM sandbox</h2>
     <p>Input:</p>
+    <div>
+        <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" spellcheck="false" id="source-text" rows="20" cols="80"></textarea>
+    </div>
     <p>
         <button onclick="innerExamples('basic')">Basic</button>
-        <button onclick="innerExamples('websandbox-environment')">DOM Api</button>
+        <button onclick="innerExamples('websandbox-environment')">DOM API</button>
         <button onclick="innerExamples('canvas')">Canvas</button>
         <button onclick="innerExamples('systemjs')">Systemjs</button>
         <button onclick="innerExamples('vue-todomvc')">Vue.js Todo MVC</button>
@@ -50,11 +92,7 @@
         <!-- <button onclick="innerExamples('mutation-observer')">MutationObserver</button> -->
         <button onclick="innerExamples('sandbox-security-error')">XSS</button>
     </p>
-    <div>
-        <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" id="source-text"
-            rows="20" cols="80"></textarea>
-    </div>
-    <p><button id="run">Evaluate</button></p>
+    <p><button class="main-button" id="run">Evaluate</button></p>
     <p>WebSandbox Output:</p>
     <web-sandbox name="sandbox-evaluate"></web-sandbox>
     <script type="module" src="/dist/web-sandbox.esm.js?v=1"></script>
