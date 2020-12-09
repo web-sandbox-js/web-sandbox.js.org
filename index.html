@@ -6,9 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebSandbox.js</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             background: #f5f5f5;
+        }
+        header, main, footer {
+            max-width: 700px;
+            margin: auto;
             text-align: center;
+        }
+        footer {
+            padding-bottom: 20px;
         }
         .logo {
             margin-top: 30px;
@@ -16,13 +26,16 @@
         }
         h1 {
             margin: 20px 0 0 0;
-            font-size: 3em;
+            font-size: 2.5em;
             color: #003cb1;
         }
         h1 sup {
+            position: relative;
+            bottom: 8px;
             font-size: 14px;
             font-weight: 500;
-            color: #888;
+            color: #f44336;
+            letter-spacing: 1px;
         }
         h1, h2 {
             font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
@@ -35,6 +48,14 @@
             font-size: 1em;
             color: #666;
         }
+        h3 {
+            color: #666;
+            font-weight: normal;
+            font-size: 1em;
+        }
+        .buttons {
+            padding: 20px 0;
+        }
         .main-button {
             padding: 0.75em 2em;
             border-radius: 2em;
@@ -42,20 +63,28 @@
             transition: all 0.15s ease;
             box-sizing: border-box;
             margin: 1em 0;
-            font-size: 1.05em;
-            font-weight: 600;
+            font-size: 1em;
+            font-weight: normal;
             letter-spacing: 0.1em;
             border: 1px solid #003cb1;
             text-decoration: none;
             cursor: pointer;
             font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
-            font-weight: 500;
             background-color: #003cb1;
             color: #FFF;
+            outline: none;
+        }
+
+        .main-button:focus {
+            border: 1px solid #FFF;
         }
 
         web-sandbox {
             text-align: left;
+            width: 100%;
+            min-height: 306px;
+            border: 3px dashed #acacac;
+            border-radius: 10px;
         }
         web-sandbox:not(:defined) {
             display: none;
@@ -66,11 +95,10 @@
         }
 
         [id=source-text] {
-            width: 662px;
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
             height: 15em;
-            min-width: 662px;
-            max-width: 662px;
-            box-sizing: border-box;
             background-color: rgba(255, 255, 255, .5);
             border-radius: 10px;
         }
@@ -78,39 +106,46 @@
         [id=source-text]:focus {
             background-color: #FFF;
         }
-
-        web-sandbox[name=sandbox-evaluate] {
-            min-height: 306px;
-            width: 662px;
-            box-sizing: border-box;
-            border: 3px dashed #003cb1;
-            border-radius: 10px;
+        footer small {
+            color: #acacac;
         }
     </style>
 </head>
 
 <body>
-    <div class="logo">☂️ </div>
-    <h1>WebSandbox.js<sup>Bate</sup></h1>
-    <h2>JavaScript's DOM sandbox</h2>
-    
-    <p>Input:</p>
-    <div>
-        <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" spellcheck="false" id="source-text" rows="20" cols="80"></textarea>
-    </div>
-    <p>
-        <button onclick="innerExamples('basic')">Basic</button>
-        <button onclick="innerExamples('websandbox-environment')">DOM API</button>
-        <button onclick="innerExamples('canvas')">Canvas</button>
-        <button onclick="innerExamples('systemjs')">Systemjs</button>
-        <button onclick="innerExamples('vue-todomvc')">Vue.js Todo MVC</button>
-        <button onclick="innerExamples('child-websandbox')">Child WebSandbox</button>
-        <!-- <button onclick="innerExamples('mutation-observer')">MutationObserver</button> -->
-        <button onclick="innerExamples('sandbox-security-error')">XSS</button>
-    </p>
-    <p><button class="main-button" id="run">Evaluate</button></p>
-    <p>WebSandbox Output:</p>
-    <web-sandbox name="sandbox-evaluate"></web-sandbox>
+    <header>
+        <div class="logo">☂️ </div>
+        <h1>WebSandbox.js<sup>Bate</sup></h1>
+        <h2>JavaScript's DOM sandbox</h2>
+    </header>
+
+    <main>
+        <div class="code">
+            <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" spellcheck="false" id="source-text" rows="20" cols="80"></textarea>
+        </div>
+        <div class="examples">
+            Examples:
+            <button onclick="innerExamples('basic')">Basic</button>
+            <button onclick="innerExamples('websandbox-environment')">DOM API</button>
+            <button onclick="innerExamples('canvas')">Canvas</button>
+            <button onclick="innerExamples('systemjs')">Systemjs</button>
+            <button onclick="innerExamples('vue-todomvc')">Vue.js Todo MVC</button>
+            <button onclick="innerExamples('child-websandbox')">Child WebSandbox</button>
+            <!-- <button onclick="innerExamples('mutation-observer')">MutationObserver</button> -->
+            <button onclick="innerExamples('sandbox-security-error')">XSS</button>
+        </div>
+        <div class="buttons"><button class="main-button" id="run">Render To WebSandbox</button></div>
+        <div class="sandbox-view">
+            <web-sandbox name="sandbox-evaluate" title="WebSandbox View"></web-sandbox>
+        </div>
+    </main>
+
+    <footer>
+        <small>
+            Note: you can look in the console to inspect the original output of the evaluation.
+        </small>
+    </footer>
+
     <script type="module" src="/dist/web-sandbox.esm.js?v=1"></script>
     <script type="module">
         customElements.whenDefined('web-sandbox').then(() => {
@@ -151,11 +186,7 @@
             };
         })
     </script>
-    <p>
-        <small>
-            Note: you can look in the console to inspect the original output of the evaluation.
-        </small>
-    </p>
+
 </body>
 
 </html>
