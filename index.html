@@ -99,6 +99,7 @@
             width: 100%;
             min-width: 100%;
             max-width: 100%;
+            padding: 10px;
             height: 15em;
             background-color: rgba(255, 255, 255, .5);
             border-radius: 10px;
@@ -109,6 +110,7 @@
         }
         footer small {
             color: #acacac;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -117,7 +119,7 @@
     <header>
         <div class="logo">☂️ </div>
         <h1>WebSandbox.js<sup>Bate</sup></h1>
-        <h2>JavaScript's DOM sandbox</h2>
+        <h2>JavaScript's DOM Sandbox</h2>
     </header>
 
     <main>
@@ -149,43 +151,46 @@
 
     <script type="module" src="/dist/web-sandbox.esm.js?v=1"></script>
     <script type="module">
+        const sourceElement = document.getElementById('source-text');
+        const sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
+
         customElements.whenDefined('web-sandbox').then(() => {
-            const sourceElement = document.getElementById('source-text');
-            sourceElement.value = localStorage.getItem('source') || '';
-            const sandbox = window.sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
-
-            window.innerExamples = (id) => {
-                const url = `/examples/${id}/index.js`;
-                fetch(url).then(res => {
-                    if (!res.ok) {
-                        throw Error([res.status, res.statusText, url].join(', '));
-                    }
-                    const jsContentTypeRegEx = /^(text|application)\/(x-)?javascript(;|$)/;
-                    const contentType = res.headers.get('content-type');
-
-                    if (!contentType || !jsContentTypeRegEx.test(contentType)) {
-                        throw Error(contentType);
-                    }
-
-                    return res.text().then(source => {
-                        if (source.indexOf('//# sourceURL=') < 0) {
-                            source += `\n//# sourceURL=${url}`;
-                        }
-                        sourceElement.value = source;
-                    });
-
-                });
-            };
-
+            const LOCAL_STORGE_KEY = 'examples';
+            sourceElement.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
             document.getElementById('run').onclick = () => {
                 const source = sourceElement.value;
                 let result, output;
 
+                console.time('evaluate');
                 result = sandbox.evaluate(source);
-                localStorage.setItem('source', source);
-
+                console.timeEnd('evaluate');
+                localStorage.setItem(LOCAL_STORGE_KEY, source);
             };
-        })
+        });
+
+        window.sandbox = sandbox;
+        window.innerExamples = (id) => {
+            const url = `/examples/${id}/index.js`;
+            fetch(url).then(res => {
+                if (!res.ok) {
+                    throw Error([res.status, res.statusText, url].join(', '));
+                }
+                const jsContentTypeRegEx = /^(text|application)\/(x-)?javascript(;|$)/;
+                const contentType = res.headers.get('content-type');
+
+                if (!contentType || !jsContentTypeRegEx.test(contentType)) {
+                    throw Error(contentType);
+                }
+
+                return res.text().then(source => {
+                    if (source.indexOf('//# sourceURL=') < 0) {
+                        source += `\n//# sourceURL=${url}`;
+                    }
+                    sourceElement.value = source;
+                });
+
+            });
+        };
     </script>
 
 </body>
