@@ -20,29 +20,29 @@
 <body>
   <script type="module">
     import * as singleSpa from 'https://cdn.jsdelivr.net/npm/single-spa@5.8.2/lib/esm/single-spa.min.js';
-    import WebSandboxAppLoader from './WebSandboxAppLoader.js';
+    import WebSandboxApp from './WebSandboxApp.js';
 
     singleSpa.registerApplication(
       'navbar',
-      ({ name }) => WebSandboxAppLoader.import(name, 'navbar/index.js'),
+      ({ name }) => WebSandboxApp.import(name, 'navbar/index.js'),
       location => true
     );
 
     singleSpa.registerApplication(
       'app1',
-      ({ name }) => WebSandboxAppLoader.import(name, 'app1/index.js'),
+      ({ name }) => WebSandboxApp.import(name, 'app1/index.js'),
       location => location.hash.startsWith('#/app1')
     );
 
     singleSpa.registerApplication(
       'app2',
-      ({ name }) => WebSandboxAppLoader.import(name, 'app2/index.js'),
+      ({ name }) => WebSandboxApp.import(name, 'app2/index.js'),
       location => location.hash.startsWith('#/app2')
     );
 
     singleSpa.registerApplication(
       'vue-todomvc',
-      ({ name }) => WebSandboxAppLoader.import(name, 'vue-todomvc/dist/app.js'),
+      ({ name }) => WebSandboxApp.import(name, 'vue-todomvc/dist/app.js'),
       location => location.hash.startsWith('#/vue-todomvc')
     );
 
