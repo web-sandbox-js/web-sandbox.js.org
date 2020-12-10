@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Coexisting Vue Microfrontends</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    web-sandbox:not(:defined) {
+      display: none;
+    }
+
+    web-sandbox:defined {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module">
+    import * as singleSpa from 'https://cdn.jsdelivr.net/npm/single-spa@5.8.2/lib/esm/single-spa.min.js';
+    import WebSandboxAppLoader from './WebSandboxAppLoader.js';
+
+    singleSpa.registerApplication(
+      'navbar',
+      ({ name }) => WebSandboxAppLoader.import(name, 'navbar/index.js'),
+      location => true
+    );
+
+    singleSpa.registerApplication(
+      'app1',
+      ({ name }) => WebSandboxAppLoader.import(name, 'app1/index.js'),
+      location => location.hash.startsWith('#/app1')
+    );
+
+    singleSpa.registerApplication(
+      'app2',
+      ({ name }) => WebSandboxAppLoader.import(name, 'app2/index.js'),
+      location => location.hash.startsWith('#/app2')
+    );
+
+    singleSpa.registerApplication(
+      'vue-todomvc',
+      ({ name }) => WebSandboxAppLoader.import(name, 'vue-todomvc/dist/app.js'),
+      location => location.hash.startsWith('#/vue-todomvc')
+    );
+
+    singleSpa.start();
+  </script>
+</body>
+
+</html>
