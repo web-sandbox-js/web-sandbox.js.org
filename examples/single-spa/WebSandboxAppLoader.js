@@ -1,4 +1,4 @@
-import '/src/index.js';
+import '/dist/web-sandbox.umd.js';
 
 export default {
   import(name, url, view = document.body) {
