@@ -20,11 +20,13 @@
         }
         footer {
             padding-bottom: 20px;
-            text-align: left;
         }
         .logo {
             margin-top: 30px;
             font-size: 8em;
+        }
+        .logo::after {
+            content: '盒';/* ☂️  */
         }
         h1 {
             position: relative;
@@ -36,7 +38,7 @@
         h1 sup {
             position: absolute;
             bottom: 20px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             color: #f44336;
             letter-spacing: 1px;
@@ -101,6 +103,7 @@
             max-width: 100%;
             padding: 10px;
             height: 15em;
+            border: 1px solid #acacac;
             background-color: rgba(255, 255, 255, .5);
             border-radius: 10px;
         }
@@ -117,7 +120,7 @@
 
 <body>
     <header>
-        <div class="logo">☂️ </div>
+        <div class="logo"></div>
         <h1>WebSandbox.js<sup>Beta</sup></h1>
         <h2>JavaScript's DOM Sandbox</h2>
     </header>
