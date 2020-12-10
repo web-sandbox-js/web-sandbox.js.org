@@ -19,7 +19,7 @@
             text-align: center;
         }
         footer {
-            padding-bottom: 20px;
+            padding-bottom: 40px;
         }
         .logo {
             margin-top: 30px;
@@ -56,6 +56,9 @@
         .examples, .examples button {
             color: #666;
         }
+        .examples button {
+            margin-bottom: 5px;
+        }
         .buttons {
             padding: 20px 0;
         }
@@ -85,7 +88,8 @@
         web-sandbox {
             text-align: left;
             width: 100%;
-            min-height: 306px;
+            min-height: 15em;
+            padding: 10px;
             border: 3px dashed #acacac;
             border-radius: 10px;
         }
@@ -140,7 +144,7 @@
             <button onclick="innerExamples('sandbox-attr')">Sandbox Config</button>
             <button onclick="innerExamples('sandbox-security-error')">XSS</button>
         </div>
-        <div class="buttons"><button class="main-button" id="run">Render To WebSandbox</button></div>
+        <div class="buttons"><button class="main-button" id="run">Render To &lt;web-sandbox /&gt;</button></div>
         <div class="sandbox-view">
             <web-sandbox name="sandbox-evaluate" title="WebSandbox View"></web-sandbox>
         </div>
