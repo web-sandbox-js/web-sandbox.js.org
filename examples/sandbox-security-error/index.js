@@ -1,10 +1,17 @@
 const testList = [
+  `<h3>tag is sandboxed</h3>`,
+  `<img src="/examples/canvas/december-holidays-days-2-30-6753651837108830.3-law.png">`,
   `<script>alert('$xss')</script>`,
   `<script type="text/javascript">alert('$xss')</script>`,
   `<script type="text/ecmascript">alert('$xss')</script>`,
   `<script type="application/javascript">alert('$xss')</script>`,
   `<script type="module">alert('$xss')</script>`,
   `<script type="text/html">alert('$xss')</script>`,
+  `<script>
+    const el = document.createElement('h3');
+    el.textContent = 'script is sandboxed';
+    document.body.appendChild(el);
+  </script>`,
   `<a href="javascript:alert('$xss')">link</a>`,
   `<a href=" javascript:alert('$xss') ">link</a>`,
   `<a HREF="javascript:alert('$xss')">link</a>`,
@@ -32,12 +39,18 @@ const testList = [
   },
   () => {
     location.href = '#safe';
+    const el = document.createElement('h3');
+    el.textContent = 'location is sandboxed';
+    document.body.appendChild(el);
   }
 ];
 
 testList.forEach((test, index) => {
   const target = document.createElement('div');
   const log = document.createElement('div');
+
+  target.setAttribute('html', index);
+  log.setAttribute('log', index);
 
   document.body.appendChild(log);
   document.body.appendChild(target);
@@ -51,8 +64,6 @@ testList.forEach((test, index) => {
       test();
       log.textContent = `${index}: Successful: ${test.toString()}`;
     }
-
-    target.dataset.test = index;
   } catch (error) {
     log.textContent = `${index}: Error: ${error.name}: ${error.message}`;
   }
