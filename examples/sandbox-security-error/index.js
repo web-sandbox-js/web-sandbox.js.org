@@ -17,11 +17,25 @@ const testList = [
   `<IMG ONERROR="alert('$xss')" />`,
   `<iframe src="javascript:alert('$xss')"></iframe>`,
   `<iframe srcdoc="&lt;script&gt;alert('$xss')&lt;/script&gt;"></iframe>`,
-  `<iframe SRCDOC="&lt;script&gt;alert('$xss')&lt;/script&gt;"></iframe>`
+  `<iframe SRCDOC="&lt;script&gt;alert('$xss')&lt;/script&gt;"></iframe>`,
+  () => {
+    location.href = `javascript:alert('$xss')`;
+  },
+  () => {
+    location.protocol = `javascript:`;
+  },
+  () => {
+    location.assign(`javascript:alert('$xss')`);
+  },
+  () => {
+    location.replace(`javascript:alert('$xss')`);
+  },
+  () => {
+    location.href = '#safe';
+  }
 ];
 
-testList.forEach((html, index) => {
-  html = html.replace(`$xss`, `${index}: xss`);
+testList.forEach((test, index) => {
   const target = document.createElement('div');
   const log = document.createElement('div');
 
@@ -29,10 +43,17 @@ testList.forEach((html, index) => {
   document.body.appendChild(target);
 
   try {
+    if (typeof test === 'string') {
+      test = test.replace(`$xss`, `${index}: xss`);
+      target.innerHTML = test;
+      log.textContent = `${index}: Successful: ${test}`;
+    } else {
+      test();
+      log.textContent = `${index}: Successful: ${test.toString()}`;
+    }
+
     target.dataset.test = index;
-    target.innerHTML = html;
-    log.textContent = `${index}: Successful: ${html}`;
   } catch (error) {
-    log.textContent = `${index}: Error: ${error.message}`;
+    log.textContent = `${index}: Error: ${error.name}: ${error.message}`;
   }
 });
