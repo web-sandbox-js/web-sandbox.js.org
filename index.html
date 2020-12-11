@@ -180,7 +180,7 @@
 
         window.sandbox = sandbox;
         window.innerExamples = (id) => {
-            const url = `/examples/${id}/index.js`;
+            const url = new URL(`/examples/${id}/index.js`, document.baseURI).href;
             fetch(url).then(res => {
                 if (!res.ok) {
                     throw Error([res.status, res.statusText, url].join(', '));
