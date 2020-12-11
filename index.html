@@ -79,12 +79,36 @@
             background-color: #003cb1;
             color: #FFF;
             outline: none;
+            opacity: 0.9;
         }
-
+        .main-button:hover {
+            opacity: 1;
+        }
+        .main-button[disabled] {
+            cursor: default;
+            opacity: 0.5;
+        }
         .main-button:focus {
             border: 1px solid #FFF;
+            opacity: 1;
         }
-
+        footer small {
+            color: #acacac;
+            font-weight: normal;
+        }
+        [id=source-text] {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            padding: 10px;
+            height: 15em;
+            border: 1px solid #acacac;
+            background-color: rgba(255, 255, 255, .5);
+            border-radius: 10px;
+        }
+        [id=source-text]:focus {
+            background-color: #FFF;
+        }
         web-sandbox {
             text-align: left;
             width: 100%;
@@ -96,28 +120,8 @@
         web-sandbox:not(:defined) {
             display: none;
         }
-
         web-sandbox:defined {
             display: inline-block;
-        }
-
-        [id=source-text] {
-            width: 100%;
-            min-width: 100%;
-            max-width: 100%;
-            padding: 10px;
-            height: 15em;
-            border: 1px solid #acacac;
-            background-color: rgba(255, 255, 255, .5);
-            border-radius: 10px;
-        }
-
-        [id=source-text]:focus {
-            background-color: #FFF;
-        }
-        footer small {
-            color: #acacac;
-            font-weight: normal;
         }
     </style>
 </head>
@@ -135,16 +139,16 @@
         </div>
         <div class="examples">
             Examples:
-            <button onclick="innerExamples('basic')">Basic</button>
-            <button onclick="innerExamples('websandbox-environment')">DOM API</button>
-            <button onclick="innerExamples('canvas')">Canvas</button>
-            <button onclick="innerExamples('systemjs')">Systemjs</button>
-            <button onclick="innerExamples('vue-todomvc')">Vue.js Todo MVC</button>
-            <button onclick="innerExamples('child-websandbox')">Child WebSandbox</button>
-            <button onclick="innerExamples('sandbox-attr')">Sandbox Config</button>
-            <button onclick="innerExamples('sandbox-security-error')">XSS Sanitize</button>
+            <button data-example="basic">Basic</button>
+            <button data-example="websandbox-environment">DOM API</button>
+            <button data-example="canvas">Canvas</button>
+            <button data-example="systemjs">Systemjs</button>
+            <button data-example="vue-todomvc">Vue.js Todo MVC</button>
+            <button data-example="child-websandbox">Child WebSandbox</button>
+            <button data-example="sandbox-attr">Sandbox Config</button>
+            <button data-example="sandbox-security-error">XSS Sanitize</button>
         </div>
-        <div class="buttons"><button class="main-button" id="run">Render To &lt;web-sandbox /&gt;</button></div>
+        <div class="buttons"><button disabled class="main-button" id="render-button">Render To &lt;web-sandbox /&gt;</button></div>
         <div class="sandbox-view">
             <web-sandbox name="sandbox-evaluate" title="WebSandbox View"></web-sandbox>
         </div>
@@ -157,29 +161,25 @@
     </footer>
 
     <script src="/dist/web-sandbox.umd.js"></script>
-    <script>
+    <script type="module">
         const sourceElement = document.getElementById('source-text');
+        const renderButton = document.getElementById('render-button');
         const sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
+        const LOCAL_STORGE_KEY = 'examples';
+        const EXAMPLES_HASH= '#/examples';
 
         customElements.whenDefined('web-sandbox').then(() => {
-            const LOCAL_STORGE_KEY = 'examples';
-            sourceElement.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
-            document.getElementById('run').onclick = () => {
-                const source = sourceElement.value;
-                let result, output;
-
-                sandbox.scrollIntoView();
-
-                console.time('evaluate');
-                result = sandbox.evaluate(source);
-                console.timeEnd('evaluate');
-                localStorage.setItem(LOCAL_STORGE_KEY, source);
-                
-            };
+            renderButton.removeAttribute('disabled');
         });
 
-        window.sandbox = sandbox;
-        window.innerExamples = (id) => {
+        const onhashchange = () => {
+            if (window.location.hash.startsWith(EXAMPLES_HASH)) {
+                const id = window.location.hash.replace(`${EXAMPLES_HASH}/`, '');
+                innerExamples(id);
+            }
+        };
+        
+        const innerExamples = (id) => {
             const url = new URL(`/examples/${id}/index.js`, document.baseURI).href;
             fetch(url).then(res => {
                 if (!res.ok) {
@@ -201,6 +201,40 @@
 
             });
         };
+
+        const init = () => {
+            renderButton.addEventListener('click', () => {
+                const source = sourceElement.value;
+                let result, output;
+
+                sandbox.scrollIntoView();
+
+                console.time('evaluate');
+                result = sandbox.evaluate(source);
+                console.timeEnd('evaluate');
+                localStorage.setItem(LOCAL_STORGE_KEY, source);
+            });
+
+            document.addEventListener('click', (event) => {
+                if (event.target.matches('[data-example]')) {
+                    const id = event.target.dataset.example;
+                    if (id) {
+                        window.location.hash = `${EXAMPLES_HASH}/${id}`;
+                    }
+                }
+            });
+
+            if (localStorage.getItem(LOCAL_STORGE_KEY)) {
+                sourceElement.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
+            } else {
+                onhashchange();
+            }
+
+            window.addEventListener('hashchange', onhashchange);
+            window.sandbox = sandbox;
+        };
+        
+        window.addEventListener('DOMContentLoaded', init);
     </script>
 
 </body>
