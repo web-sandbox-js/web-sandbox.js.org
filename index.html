@@ -189,9 +189,9 @@
         </small>
     </footer>
 
-    <script src="/dist/web-sandbox.umd.js"></script>
+    <script type="module" src="/dist/web-sandbox.umd.js"></script>
     <script type="module">
-        const sourceElement = document.getElementById('source-text');
+        const sourceInput = document.getElementById('source-text');
         const renderButton = document.getElementById('render-button');
         const sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
         const LOCAL_STORGE_KEY = 'examples';
@@ -201,15 +201,16 @@
             renderButton.removeAttribute('disabled');
         });
 
-        const onhashchange = () => {
+        const setSourceInputValue = () => {
             if (window.location.hash.startsWith(EXAMPLES_HASH)) {
-                const id = window.location.hash.replace(`${EXAMPLES_HASH}/`, '');
-                innerExamples(id);
+                const url = window.location.hash.replace(`${EXAMPLES_HASH}/`, '');
+                innerExamples(decodeURI(url));
+            } else {
+                sourceInput.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
             }
         };
 
-        const innerExamples = (id) => {
-            const url = new URL(`/examples/${id}/index.js`, document.baseURI).href;
+        const innerExamples = (url) => {
             fetch(url).then(res => {
                 if (!res.ok) {
                     throw Error([res.status, res.statusText, url].join(', '));
@@ -225,7 +226,7 @@
                     if (source.indexOf('//# sourceURL=') < 0) {
                         source += `\n//# sourceURL=${url}`;
                     }
-                    sourceElement.value = source;
+                    sourceInput.value = source;
                 });
 
             });
@@ -233,7 +234,7 @@
 
         const init = () => {
             renderButton.addEventListener('click', () => {
-                const source = sourceElement.value;
+                const source = sourceInput.value;
                 let result, output;
 
                 sandbox.scrollIntoView();
@@ -248,18 +249,14 @@
                 if (event.target.matches('[data-example]')) {
                     const id = event.target.dataset.example;
                     if (id) {
-                        window.location.hash = `${EXAMPLES_HASH}/${id}`;
+                        const url = window.encodeURI(new URL(`/examples/${id}/index.js`, document.baseURI).href);
+                        window.location.hash = `${EXAMPLES_HASH}/${url}`;
                     }
                 }
             });
 
-            if (localStorage.getItem(LOCAL_STORGE_KEY)) {
-                sourceElement.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
-            } else {
-                onhashchange();
-            }
-
-            window.addEventListener('hashchange', onhashchange);
+            setSourceInputValue();
+            window.addEventListener('hashchange', setSourceInputValue);
             window.sandbox = sandbox;
         };
 
