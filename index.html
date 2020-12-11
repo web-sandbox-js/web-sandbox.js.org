@@ -9,25 +9,34 @@
         * {
             box-sizing: border-box;
         }
+
         body {
             background: #f5f5f5;
         }
-        header, main, footer {
+
+        header,
+        main,
+        footer {
             padding: 0 10px;
             max-width: 700px;
             margin: auto;
             text-align: center;
         }
+
         footer {
             padding-bottom: 40px;
         }
+
         .logo {
             margin-top: 30px;
             font-size: 8em;
         }
+
         .logo::after {
-            content: '盒';/* ☂️  */
+            content: '盒';
+            /* ☂️  */
         }
+
         h1 {
             position: relative;
             margin: 20px 0 0 0;
@@ -35,6 +44,7 @@
             letter-spacing: 5px;
             color: #003cb1;
         }
+
         h1 sup {
             position: absolute;
             bottom: 20px;
@@ -43,25 +53,33 @@
             color: #f44336;
             letter-spacing: 1px;
         }
-        h1, h2 {
+
+        h1,
+        h2 {
             font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
             font-weight: 300;
         }
+
         h2 {
             margin: 5px 0 80px 0;
             line-height: 1.2em;
             font-size: 1em;
             color: #666;
         }
-        .examples, .examples button {
+
+        .examples,
+        .examples button {
             color: #666;
         }
+
         .examples button {
             margin-bottom: 5px;
         }
+
         .buttons {
             padding: 20px 0;
         }
+
         .main-button {
             padding: 0.75em 2em;
             border-radius: 2em;
@@ -81,21 +99,26 @@
             outline: none;
             opacity: 0.9;
         }
+
         .main-button:hover {
             opacity: 1;
         }
+
         .main-button[disabled] {
             cursor: default;
             opacity: 0.5;
         }
+
         .main-button:focus {
             border: 1px solid #FFF;
             opacity: 1;
         }
+
         footer small {
             color: #acacac;
             font-weight: normal;
         }
+
         [id=source-text] {
             width: 100%;
             min-width: 100%;
@@ -106,9 +129,11 @@
             background-color: rgba(255, 255, 255, .5);
             border-radius: 10px;
         }
+
         [id=source-text]:focus {
             background-color: #FFF;
         }
+
         web-sandbox {
             text-align: left;
             width: 100%;
@@ -117,9 +142,11 @@
             border: 3px dashed #acacac;
             border-radius: 10px;
         }
+
         web-sandbox:not(:defined) {
             display: none;
         }
+
         web-sandbox:defined {
             display: inline-block;
         }
@@ -135,7 +162,8 @@
 
     <main>
         <div class="code">
-            <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" spellcheck="false" id="source-text" rows="20" cols="80"></textarea>
+            <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" spellcheck="false"
+                id="source-text" rows="20" cols="80"></textarea>
         </div>
         <div class="examples">
             Examples:
@@ -148,7 +176,8 @@
             <button data-example="sandbox-attr">Sandbox Config</button>
             <button data-example="sandbox-security-error">XSS Sanitize</button>
         </div>
-        <div class="buttons"><button disabled class="main-button" id="render-button">Render To &lt;web-sandbox /&gt;</button></div>
+        <div class="buttons"><button disabled class="main-button" id="render-button">Render To &lt;web-sandbox
+                /&gt;</button></div>
         <div class="sandbox-view">
             <web-sandbox name="sandbox-evaluate" title="WebSandbox View"></web-sandbox>
         </div>
@@ -166,7 +195,7 @@
         const renderButton = document.getElementById('render-button');
         const sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
         const LOCAL_STORGE_KEY = 'examples';
-        const EXAMPLES_HASH= '#/examples';
+        const EXAMPLES_HASH = '#/examples';
 
         customElements.whenDefined('web-sandbox').then(() => {
             renderButton.removeAttribute('disabled');
@@ -178,7 +207,7 @@
                 innerExamples(id);
             }
         };
-        
+
         const innerExamples = (id) => {
             const url = new URL(`/examples/${id}/index.js`, document.baseURI).href;
             fetch(url).then(res => {
@@ -233,7 +262,7 @@
             window.addEventListener('hashchange', onhashchange);
             window.sandbox = sandbox;
         };
-        
+
         window.addEventListener('DOMContentLoaded', init);
     </script>
 
