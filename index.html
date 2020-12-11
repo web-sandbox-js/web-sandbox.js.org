@@ -168,10 +168,13 @@
                 const source = sourceElement.value;
                 let result, output;
 
+                sandbox.scrollIntoView();
+
                 console.time('evaluate');
                 result = sandbox.evaluate(source);
                 console.timeEnd('evaluate');
                 localStorage.setItem(LOCAL_STORGE_KEY, source);
+                
             };
         });
 
