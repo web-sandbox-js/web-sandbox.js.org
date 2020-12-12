@@ -89,6 +89,7 @@ style.textContent = `
       margin-bottom: 1rem;
       font-size: 14px;
   }
+  /* 隐藏默认三角 */
   ::-webkit-details-marker {
       display: none;
   }
@@ -127,7 +128,8 @@ style.textContent = `
   }
   `;
 
-const template = api
+const template = document.createElement('div');
+template.innerHTML = api
   .map(
     ({ name, type, prototype, property }) => `
     <details open>
@@ -152,4 +154,4 @@ const template = api
   .join('');
 
 document.head.appendChild(style);
-document.body.innerHTML = template;
+document.body.appendChild(template);

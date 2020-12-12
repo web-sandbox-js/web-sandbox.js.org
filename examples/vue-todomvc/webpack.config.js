@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 function copyFile(src, dist) {
   fs.writeFileSync(dist, fs.readFileSync(src));
@@ -10,7 +9,7 @@ function copyFile(src, dist) {
 class DonePlugin {
   // eslint-disable-next-line class-methods-use-this
   apply(compiler) {
-    compiler.hooks.done.tap('Hello World Plugin', stats => {
+    compiler.hooks.done.tap('copyFile', () => {
       copyFile(
         path.resolve(
           __dirname,
@@ -45,15 +44,17 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [
+          'vue-style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              esModule: false
+            }
+          }
+        ]
       }
     ]
   },
-  plugins: [
-    new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'app.css'
-    }),
-    new DonePlugin()
-  ]
+  plugins: [new VueLoaderPlugin(), new DonePlugin()]
 };

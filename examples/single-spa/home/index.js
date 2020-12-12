@@ -12,7 +12,7 @@
         style = document.createElement('style');
         style.textContent = `body { color: red }`;
         template = document.createElement('div');
-        template.innerHTML = `hello app2`;
+        template.textContent = `Examples: singleSpa & WebSandbox`;
       });
     },
     mount: function mount(props) {

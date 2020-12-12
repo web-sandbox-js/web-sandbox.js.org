@@ -29,15 +29,15 @@
     );
 
     singleSpa.registerApplication(
-      'app1',
-      ({ name }) => WebSandboxApp.import(name, 'app1/index.js'),
-      location => location.hash.startsWith('#/app1')
+      'home',
+      ({ name }) => WebSandboxApp.import(name, 'home/index.js'),
+      location => location.hash === '' || location.hash.startsWith('#/home')
     );
 
     singleSpa.registerApplication(
-      'app2',
-      ({ name }) => WebSandboxApp.import(name, 'app2/index.js'),
-      location => location.hash.startsWith('#/app2')
+      'sandbox-window-api',
+      ({ name }) => WebSandboxApp.import(name, 'sandbox-window-api/index.js'),
+      location => location.hash.startsWith('#/sandbox-window-api')
     );
 
     singleSpa.registerApplication(

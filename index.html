@@ -123,8 +123,9 @@
             width: 100%;
             min-width: 100%;
             max-width: 100%;
-            padding: 10px;
             height: 15em;
+            min-height: 4.5em;
+            padding: 10px;
             border: 1px solid #acacac;
             background-color: rgba(255, 255, 255, .5);
             border-radius: 10px;
@@ -204,7 +205,7 @@
         const setSourceInputValue = () => {
             if (window.location.hash.startsWith(EXAMPLES_HASH)) {
                 const url = window.location.hash.replace(`${EXAMPLES_HASH}/`, '');
-                innerExamples(decodeURI(url));
+                innerExamples(window.decodeURI(url));
             } else {
                 sourceInput.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
             }

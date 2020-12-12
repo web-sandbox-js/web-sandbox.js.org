@@ -13,9 +13,9 @@
         style.textContent = `nav { color: #000 }`;
         template = document.createElement('nav');
         template.innerHTML = `
-        <a href="#/app1">app1</a>
+        <a href="#/home">home</a>
         |
-        <a href="#/app2">app2</a>
+        <a href="#/sandbox-window-api">sandbox-window-api</a>
         |
         <a href="#/vue-todomvc">vue-todomvc</a>
         `;

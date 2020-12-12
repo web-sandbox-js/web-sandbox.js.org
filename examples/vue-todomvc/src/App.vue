@@ -50,18 +50,18 @@
         </span>
         <ul class="filters">
           <li>
-            <a href="#/all" :class="{ selected: visibility == 'all' }">All</a>
+            <button @click="filters('all')" :class="{ selected: visibility == 'all' }">All</button>
           </li>
           <li>
-            <a href="#/active" :class="{ selected: visibility == 'active' }"
-              >Active</a
+            <button @click="filters('active')" :class="{ selected: visibility == 'active' }"
+              >Active</button
             >
           </li>
           <li>
-            <a
-              href="#/completed"
+            <button
+               @click="filters('completed')"
               :class="{ selected: visibility == 'completed' }"
-              >Completed</a
+              >Completed</button
             >
           </li>
         </ul>
@@ -208,6 +208,15 @@ export default {
 
     removeCompleted() {
       this.todos = filters.active(this.todos);
+    },
+
+    filters(visibility) {
+      if (filters[visibility]) {
+        this.visibility = visibility;
+      } else {
+        //window.location.hash = '';
+        this.visibility = 'all';
+      }
     }
   },
 
@@ -220,22 +229,6 @@ export default {
         el.focus();
       }
     }
-  },
-
-  mounted() {
-    // handle routing
-    const onHashChange = () => {
-      const visibility = window.location.hash.replace(/#\/?/, '');
-      if (filters[visibility]) {
-        this.visibility = visibility;
-      } else {
-        window.location.hash = '';
-        this.visibility = 'all';
-      }
-    }
-
-    window.addEventListener('hashchange', onHashChange);
-    onHashChange();
   }
 };
 </script>
@@ -535,7 +528,7 @@ button {
   display: inline;
 }
 
-.filters li a {
+.filters li button {
   color: inherit;
   margin: 3px;
   padding: 3px 7px;
@@ -544,11 +537,11 @@ button {
   border-radius: 3px;
 }
 
-.filters li a:hover {
+.filters li button:hover {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li a.selected {
+.filters li button.selected {
   border-color: rgba(175, 47, 47, 0.2);
 }
 

@@ -1,10 +1,10 @@
 import '/dist/web-sandbox.umd.js';
 
 export default {
-  import(name, url, view = document.body) {
-    url = new URL(url, document.baseURI).href;
+  import(name, url, view = window.document.body) {
     return new Promise((resolve, reject) => {
-      fetch(url).then(res => {
+      url = new URL(url, window.document.baseURI).href;
+      window.fetch(url).then(res => {
         if (!res.ok) {
           throw Error([res.status, res.statusText, url].join(', '));
         }
@@ -26,19 +26,14 @@ export default {
             const exports = {};
             const module = { exports };
 
-            const sandbox = document.createElement('web-sandbox');
+            const sandbox = window.document.createElement('web-sandbox');
             sandbox.name = name;
             view.appendChild(sandbox);
 
-            try {
-              sandbox.evaluate(source, {
-                module,
-                exports
-              });
-            } catch (error) {
-              console.error(error);
-              return reject(error);
-            }
+            sandbox.evaluate(source, {
+              module,
+              exports
+            });
 
             resolve(module.exports);
           })
