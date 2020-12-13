@@ -238,6 +238,15 @@ runTest(
   true
 );
 
+runTest(
+  ['outerHTML', 'xss'],
+  el => {
+    el = el.appendChild(document.createElement('div'));
+    el.outerHTML = `<script>alert('$xss')</script>`;
+  },
+  true
+);
+
 // runTest(
 //   ['location'],
 //   () => {
