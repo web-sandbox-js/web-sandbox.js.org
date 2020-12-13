@@ -44,6 +44,7 @@ function runTest(names, fn, shouldThrow) {
     document.getElementById('table').appendChild(row);
     row.querySelector('.id').innerText = ++testNumber;
     row.querySelector('.name').innerText = names.join(' ');
+    row.querySelector('.name').title = fn.toString();
     fn(row.querySelector('.payload'));
     row.querySelector('.result').className += shouldThrow ? ' fail' : ' pass';
   } catch (e) {
@@ -86,7 +87,7 @@ runTest(
   el => {
     el.innerHTML = `<script>alert('$xss')</script>`;
   },
-  false
+  true
 );
 
 runTest(
@@ -94,7 +95,15 @@ runTest(
   el => {
     el.innerHTML = `<script type="text/javascript">alert('$xss')</script>`;
   },
-  false
+  true
+);
+
+runTest(
+  ['innerHTML', 'script[type="text/JavaScript"]', 'xss'],
+  el => {
+    el.innerHTML = `<script type="text/JavaScript">alert('$xss')</script>`;
+  },
+  true
 );
 
 runTest(
@@ -102,7 +111,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="text/ecmascript">alert('$xss')</script>`;
   },
-  false
+  true
 );
 
 runTest(
@@ -110,7 +119,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="application/javascript">alert('$xss')</script>`;
   },
-  false
+  true
 );
 
 runTest(
@@ -118,7 +127,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="module">alert('$xss')</script>`;
   },
-  false
+  true
 );
 
 runTest(
@@ -237,6 +246,39 @@ runTest(
   ['location', 'replace()', 'xss'],
   () => {
     location.replace(`javascript:alert('$xss')`);
+  },
+  true
+);
+
+runTest(
+  ['Function', 'xss'],
+  el => {
+    new Function(`alert('$xss')`)();
+  },
+  true
+);
+
+runTest(
+  ['eval', 'xss'],
+  el => {
+    const e = 'eval';
+    window[e](`alert('$xss')`)();
+  },
+  true
+);
+
+runTest(
+  ['Object', 'constructor.constructor', 'xss'],
+  el => {
+    ({}.constructor.constructor(`alert('$xss')`)());
+  },
+  true
+);
+
+runTest(
+  ['Function', 'eval', 'xss'],
+  el => {
+    new Function(`window['ev' + 'al']("alert('$xss')")`)();
   },
   true
 );
