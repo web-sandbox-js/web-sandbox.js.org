@@ -310,3 +310,25 @@ runTest(
   },
   true
 );
+
+runTest(
+  ['localStorage'],
+  el => {
+    localStorage.test = 'parent';
+
+    const subSandbox = document.createElement('web-sandbox');
+    subSandbox.name = 'sub';
+    el.appendChild(subSandbox);
+
+    if (subSandbox.contentWindow.localStorage.test === localStorage.test) {
+      throw new Error(`Local storage is contaminated`);
+    }
+
+    subSandbox.contentWindow.localStorage.test = 'sub';
+
+    if (subSandbox.contentWindow.localStorage.test === localStorage.test) {
+      throw new Error(`Local storage is contaminated`);
+    }
+  },
+  false
+);
