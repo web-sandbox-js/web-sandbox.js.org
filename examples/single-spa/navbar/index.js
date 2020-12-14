@@ -18,13 +18,13 @@ export function bootstrap(props) {
 export function mount(props) {
   return Promise.resolve().then(() => {
     document.head.appendChild(style);
-    document.body.appendChild(template);
+    document.querySelector('header').appendChild(template);
   });
 }
 
 export function unmount(props) {
   return Promise.resolve().then(() => {
     document.head.removeChild(style);
-    document.body.removeChild(template);
+    document.querySelector('header').removeChild(template);
   });
 }
