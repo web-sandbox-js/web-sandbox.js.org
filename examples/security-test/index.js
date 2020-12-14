@@ -1,3 +1,6 @@
+/* eslint-disable no-new-func */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
 /* eslint-disable no-script-url */
 const style = document.createElement('style');
 style.textContent = `
@@ -289,7 +292,7 @@ runTest(
 
 runTest(
   ['Function', 'xss'],
-  el => {
+  () => {
     new Function(`alert('$xss')`)();
   },
   true
@@ -297,7 +300,7 @@ runTest(
 
 runTest(
   ['eval', 'xss'],
-  el => {
+  () => {
     const e = 'eval';
     window[e](`alert('$xss')`)();
   },
@@ -306,7 +309,7 @@ runTest(
 
 runTest(
   ['Object', 'constructor.constructor', 'xss'],
-  el => {
+  () => {
     ({}.constructor.constructor(`alert('$xss')`)());
   },
   true
@@ -314,7 +317,7 @@ runTest(
 
 runTest(
   ['Function', 'eval', 'xss'],
-  el => {
+  () => {
     new Function(`window['ev' + 'al']("alert('$xss')")`)();
   },
   true
@@ -323,21 +326,26 @@ runTest(
 runTest(
   ['localStorage'],
   el => {
-    localStorage.test = 'parent';
+    const PARENT_VALUE = 'parent-value';
+    const CHILD_VALUE = 'child-value';
 
-    const subSandbox = document.createElement('web-sandbox');
-    subSandbox.name = 'sub';
-    el.appendChild(subSandbox);
+    localStorage.test = PARENT_VALUE;
 
-    if (subSandbox.contentWindow.localStorage.test === localStorage.test) {
-      throw new Error(`Local storage is contaminated`);
+    const sandbox = document.createElement('web-sandbox');
+    sandbox.name = 'child2';
+    sandbox.srcdoc = `
+      localStorage.test = ${JSON.stringify(CHILD_VALUE)};
+    `;
+
+    el.appendChild(sandbox);
+
+    if (localStorage.test !== PARENT_VALUE) {
+      throw new Error(`parent: Local storage is contaminated`);
     }
 
-    subSandbox.contentWindow.localStorage.test = 'sub';
-
-    if (subSandbox.contentWindow.localStorage.test === localStorage.test) {
-      throw new Error(`Local storage is contaminated`);
-    }
+    // if (sandbox.contentWindow.localStorage.test !== CHILD_VALUE) {
+    //   throw new Error(`child: Local storage is contaminated`);
+    // }
   },
   false
 );
