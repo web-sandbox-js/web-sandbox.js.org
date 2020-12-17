@@ -90,7 +90,7 @@ runTest(
   el => {
     el.innerHTML = `<script>alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -98,7 +98,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="text/javascript">alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -106,7 +106,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="text/JavaScript">alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -114,7 +114,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="text/ecmascript">alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -122,7 +122,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="application/javascript">alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -130,7 +130,7 @@ runTest(
   el => {
     el.innerHTML = `<script type="module">alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -146,7 +146,7 @@ runTest(
   el => {
     el.innerHTML = `<a href="javascript:alert('$xss')">link</a>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -154,7 +154,7 @@ runTest(
   el => {
     el.innerHTML = `<a href="JavaScript:alert('$xss')">link</a>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -162,7 +162,7 @@ runTest(
   el => {
     el.innerHTML = `<a HREF="javascript:alert('$xss')">link</a>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -170,7 +170,7 @@ runTest(
   el => {
     el.innerHTML = `<img src="javascript:alert('$xss')" />`;
   },
-  true
+  false
 );
 
 runTest(
@@ -178,7 +178,7 @@ runTest(
   el => {
     el.innerHTML = `<img onerror="alert('$xss')" />`;
   },
-  true
+  false
 );
 
 runTest(
@@ -186,7 +186,7 @@ runTest(
   el => {
     el.innerHTML = `<img onError="alert('$xss')" />`;
   },
-  true
+  false
 );
 
 runTest(
@@ -194,7 +194,7 @@ runTest(
   el => {
     el.innerHTML = `<form action="javascript:alert('$xss')"></form>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -202,7 +202,7 @@ runTest(
   el => {
     el.innerHTML = `<iframe src="javascript:alert('$xss')"></iframe>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -210,7 +210,7 @@ runTest(
   el => {
     el.innerHTML = `<iframe srcdoc="&lt;script&gt;alert('$xss')&lt;/script&gt;"></iframe>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -218,7 +218,7 @@ runTest(
   el => {
     el.innerHTML = `<object type="application/pdf" data="javascript:alert('$xss')"></object>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -226,7 +226,7 @@ runTest(
   el => {
     el.innerHTML = `<button formaction="javascript:alert('$xss')">submit</button>`;
   },
-  true
+  false
 );
 
 runTest(
@@ -238,7 +238,7 @@ runTest(
     Your browser does not support the video tag.
  </video> `;
   },
-  true
+  false
 );
 
 runTest(
@@ -247,7 +247,7 @@ runTest(
     el = el.appendChild(document.createElement('div'));
     el.outerHTML = `<script>alert('$xss')</script>`;
   },
-  true
+  false
 );
 
 // runTest(
