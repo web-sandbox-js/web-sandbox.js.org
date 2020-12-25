@@ -216,7 +216,7 @@ runTest(
 runTest(
   ['innerHTML', 'object.data', 'xss'],
   el => {
-    el.innerHTML = `<object type="application/pdf" data="javascript:alert('$xss')"></object>`;
+    el.innerHTML = `<object type="application/pdf" data="javascript:alert('$xss')" width="64" height="64"></object>`;
   },
   false
 );
@@ -232,7 +232,7 @@ runTest(
 runTest(
   ['innerHTML', 'video.poster', 'xss'],
   el => {
-    el.innerHTML = `<video controls poster="javascript:alert('$xss')">
+    el.innerHTML = `<video controls poster="javascript:alert('$xss')" width="64" height="64">
     <source src="movie.mp4" type="video/mp4">
     <source src="movie.ogg" type="video/ogg">
     Your browser does not support the video tag.
