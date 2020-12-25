@@ -1,21 +1,14 @@
-/* eslint-disable no-new-func */
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-undef */
-/* eslint-disable no-script-url */
-const style = document.createElement('style');
-style.textContent = `
-  table {display: block; border-collapse: collapse;}
-  td {border: 1px solid #888; padding: 0.5em;}
-  .result {width: 100px;}
-  .pass {background-color: green;}
-  .fail {background-color: red;}
-  #row {display: none;}
-  iframe {width: 20px; height: 20px;}
-  .payload img {max-width: 64px; max-height: 64px}
-`;
-document.head.appendChild(style);
-
+/* eslint-disable */
 document.body.innerHTML = `
+  <style>
+    table {display: block; border-collapse: collapse;}
+    td {border: 1px solid #888; padding: 0.5em;}
+    .result {width: 100px;}
+    .pass {background-color: green;}
+    .fail {background-color: red;}
+    #row {display: none;}
+    .payload * {max-width: 64px; max-height: 64px; overflow: hidden}
+  </style>
   <h1>WebSandbox Security Test</h1>
   <table>
     <thead>
