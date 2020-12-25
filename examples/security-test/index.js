@@ -242,10 +242,44 @@ runTest(
 );
 
 runTest(
+  ['innerHTML', 'noscript', 'xss'],
+  el => {
+    el.innerHTML = `
+      <b><noscript><a alt="</noscript><img src=x onerror=alert('$xss')>"></noscript>
+    `;
+  },
+  false
+);
+
+runTest(
+  ['innerHTML', 'math', 'xss'],
+  el => {
+    el.innerHTML = `
+      <form><math><mtext></form><form><mglyph><style><img src=x onerror=alert('$xss')>
+    `;
+  },
+  false
+);
+
+runTest(
   ['outerHTML', 'xss'],
   el => {
     el = el.appendChild(document.createElement('div'));
     el.outerHTML = `<script>alert('$xss')</script>`;
+  },
+  false
+);
+
+runTest(
+  ['template', 'cloneNode', 'xss'],
+  el => {
+    const template = document.createElement('template');
+    template.innerHTML = `
+      <img onerror="alert('$xss')" />
+      <a href="javascript:alert('$xss')">link</a>
+      <script>alert('$xss: cloneNode')</script>
+    `;
+    el.appendChild(template.content.cloneNode(true));
   },
   false
 );
