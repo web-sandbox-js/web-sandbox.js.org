@@ -42,6 +42,7 @@ function runTest(names, fn, shouldThrow) {
     row.querySelector('.name').innerText = names.join(' ');
     row.querySelector('.name').title = fn.toString();
     fn(row.querySelector('.payload'));
+    row.querySelector('.payload').title = row.querySelector('.payload').innerHTML;
     row.querySelector('.result').className += shouldThrow ? ' fail' : ' pass';
   } catch (e) {
     row.querySelector('.result').className += !shouldThrow ? ' fail' : ' pass';
