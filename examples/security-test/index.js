@@ -278,13 +278,13 @@ runTest(
   false
 );
 
-// runTest(
-//   ['location'],
-//   () => {
-//     location.hash = `${location.hash}#/safe`;
-//   },
-//   false
-// );
+runTest(
+  ['location'],
+  () => {
+    location.hash = `${location.hash}#/safe`;
+  },
+  false
+);
 
 runTest(
   ['location', 'href', 'xss'],
