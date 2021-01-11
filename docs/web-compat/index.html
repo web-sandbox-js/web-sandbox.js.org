@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>WebSandbox.js</title>
+  <style>
+    web-sandbox:not(:defined) {
+      display: none;
+    }
+
+    web-sandbox:defined {
+      display: block;
+    }
+
+    nav a:not(:last-child)::after {
+      display: inline-block;
+      margin: 0 3px;
+      content: '-'
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    details {
+        margin-bottom: 1rem;
+        font-size: 14px;
+    }
+    ::-webkit-details-marker {
+        display: none;
+    }
+    ::-moz-list-bullet {
+        font-size: 0;
+        float: left;
+    }
+    summary {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        outline: 0;
+    }
+    summary[focus] {
+        outline: 1px dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+    }
+    summary {
+        font-weight: bold;
+    }
+    summary::after {
+        content: '';
+        position: absolute;
+        width: 12px; height: 12px;
+        margin: 4px 0 0 .5ch;
+        background: url(./arrow-on.svg) no-repeat;
+        background-size: 100% 100%;
+        transition: transform .2s;
+    }
+    [open] summary::after {
+        transform: rotate(90deg);
+    }
+    dd {
+        margin: 0 0 0 1em;
+    }
+    [compat=true] strong {
+      color: green;
+    }
+    [compat=false] strong {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>WebSandbox.js compatibility</h1>
+  <h2>DOM API Compatibility</h2>
+  <p>This section highlights the DOM APIs that are implemented in WebSandbox.js currently.</p>
+  <nav>Filter: <a href="#!/compat=all">All</a> <a href="#!/?compat=true">Compat</a> <a href="#!/?compat=false">Not Compat</a></nav>
+  <web-sandbox name="api" onload="window.sandbox = this.contentWindow"></web-sandbox>
+  <div id="list"></div>
+  <script type="module">
+    import '../../dist/web-sandbox.umd.js';
+    import './index.js';
+  </script>
+</body>
+
+</html>
