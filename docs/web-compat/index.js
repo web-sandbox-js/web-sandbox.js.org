@@ -4,7 +4,7 @@ importScript('/docs/web-compat/global-features.js').then(globalFeatures => {
   const sandboxGlobalFeatures = globalFeatures(sandbox.contentWindow);
 
   const hashchange = () => {
-    const url = location.hash.replace(/#!\//, '') || '?compat="all"';
+    const url = location.hash.replace(/#!\//, '') || '?compat=all';
     const search = new URLSearchParams(url);
     const filter = search.get('compat');
     render(
