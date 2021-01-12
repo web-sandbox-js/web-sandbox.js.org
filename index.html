@@ -197,8 +197,8 @@
         const sourceInput = document.getElementById('source-text');
         const renderButton = document.getElementById('render-button');
         const sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
-        const LOCAL_STORGE_KEY = 'examples';
-        const EXAMPLES_HASH = '#/examples';
+        const LOCAL_STORGE_KEY = 'WEB_SANDBOX_SCRIPTS';
+        const EXAMPLES_HASH = '#/scripts';
 
         customElements.whenDefined('web-sandbox').then(() => {
             renderButton.removeAttribute('disabled');
