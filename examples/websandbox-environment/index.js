@@ -1,134 +1,28 @@
-const getFeatures = window => {
-  const esIgnore = name => {
-    if (typeof name !== 'string') {
-      return true;
-    }
-    return [
-      'Infinity',
-      'NaN',
-      'undefined',
-      'isFinite',
-      'isNaN',
-      'parseFloat',
-      'parseInt',
-      'decodeURI',
-      'decodeURIComponent',
-      'encodeURI',
-      'encodeURIComponent',
-      'Array',
-      'ArrayBuffer',
-      'Boolean',
-      'DataView',
-      'EvalError',
-      'Float32Array',
-      'Float64Array',
-      'Int8Array',
-      'Int16Array',
-      'Int32Array',
-      'Map',
-      'Number',
-      'Object',
-      'RangeError',
-      'ReferenceError',
-      'Set',
-      'String',
-      'Symbol',
-      'SyntaxError',
-      'TypeError',
-      'Uint8Array',
-      'Uint8ClampedArray',
-      'Uint16Array',
-      'Uint32Array',
-      'URIError',
-      'WeakMap',
-      'WeakSet',
-      'JSON',
-      'Math',
-      'Reflect',
-      'escape',
-      'unescape',
-      'Date',
-      'Error',
-      'Promise',
-      'Proxy',
-      'RegExp',
-      'Intl',
-      'Realm',
-      'eval',
-      'Function'
-    ].includes(name);
-  };
-  const webkitIgnore = name => {
-    if (typeof name !== 'string') {
-      return true;
-    }
-    return /webkit/i.test(name);
-  };
-  const instanceIgnore = name => {
-    if (typeof name !== 'string') {
-      return true;
-    }
-    return (
-      ['window', 'self', 'document', 'globalThis'].includes(name) ||
-      webkitIgnore(name)
-    );
-  };
-  const staticIgnore = name => {
-    if (typeof name !== 'string') {
-      return true;
-    }
-    return (
-      ['length', 'arguments', 'caller', 'prototype', 'name'].includes(name) ||
-      webkitIgnore(name)
-    );
-  };
-  const prototypeIgnore = name => {
-    if (typeof name !== 'string') {
-      return true;
-    }
-    return ['constructor'].includes(name) || webkitIgnore(name);
-  };
-  const byName = function(a, b) {
-    if (typeof a !== 'string' || typeof b !== 'string') {
-      return 0;
-    }
+importScript('/examples/websandbox-environment/get-global-features.js').then(
+  getGlobalFeatures => {
+    render(getGlobalFeatures(window));
+  }
+);
 
-    const nameA = a.toUpperCase();
-    const nameB = b.toUpperCase();
-    if (nameA < nameB) {
-      return -1;
-    }
-    if (nameA > nameB) {
-      return 1;
-    }
-    return 0;
-  };
-  const isClass = value =>
-    typeof value === 'function' && /^[A-Z]/.test(value.name);
-
-  const features = {};
-
-  Reflect.ownKeys(window)
-    .filter(name => !esIgnore(name) && !instanceIgnore(name))
-    .sort(byName)
-    .forEach(name => {
-      const value = window[name];
-      if (isClass(value)) {
-        features[name] = {
-          prototype: Reflect.ownKeys(value.prototype || {})
-            .filter(name => !prototypeIgnore(name))
-            .sort(byName),
-          static: Reflect.ownKeys(value || {})
-            .filter(name => !staticIgnore(name))
-            .sort(byName)
-        };
-      }
+function importScript(url) {
+  if (typeof module !== 'object') {
+    window.exports = {};
+    window.module = { exports };
+  }
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.addEventListener('load', () => {
+      resolve(window.module.exports);
     });
+    script.addEventListener('error', e => {
+      reject(e);
+    });
+    script.src = url;
+    document.head.appendChild(script);
+  });
+}
 
-  return features;
-};
-
-const render = features => {
+function render(features) {
   const document = window.document;
   const style = document.createElement('style');
   style.textContent = `
@@ -181,8 +75,9 @@ const render = features => {
       <details open>
         <summary>${name}</summary>
         <ul>
-        ${value.prototype.map(name => `<li>${name}</li>`).join('')}
-        ${value.static.map(name => `<li>#${name}</li>`).join('')}
+        ${(value.properties || []).map(name => `<li>${name}</li>`).join('')}
+        ${(value.prototype || []).map(name => `<li>${name}</li>`).join('')}
+        ${(value.static || []).map(name => `<li>#${name}</li>`).join('')}
         </ul>
       </details>
     `
@@ -190,6 +85,4 @@ const render = features => {
     .join('');
   document.head.appendChild(style);
   document.body.appendChild(template);
-};
-
-render(getFeatures(window));
+}

@@ -1,12 +1,15 @@
 importScript('/docs/web-compat/global-features.js').then(globalFeatures => {
   const sandbox = document.querySelector('web-sandbox[name=api]');
+  console.time('globalFeatures');
   const hostGlobalFeatures = globalFeatures(window);
+  console.timeEnd('globalFeatures');
   const sandboxGlobalFeatures = globalFeatures(sandbox.contentWindow);
 
   const hashchange = () => {
     const url = location.hash.replace(/#!\//, '') || '?compat=all';
     const search = new URLSearchParams(url);
     const filter = search.get('compat');
+    console.log(hostGlobalFeatures);
     render(
       document.getElementById('list'),
       hostGlobalFeatures,
@@ -66,7 +69,7 @@ function render(
           ...(value.properties || [])
             .filter(() => filter)
             .map(propertie => ({
-              prefix: '',
+              prefix: typeof window[name] === 'function' ? '#' : '',
               compat:
                 compat &&
                 sandboxGlobalFeatures[name].properties.includes(propertie),
@@ -79,15 +82,6 @@ function render(
               compat:
                 compat &&
                 sandboxGlobalFeatures[name].prototype.includes(propertie),
-              propertie
-            })),
-          ...(value.static || [])
-            .filter(() => filter)
-            .map(propertie => ({
-              prefix: '#',
-              compat:
-                compat &&
-                sandboxGlobalFeatures[name].static.includes(propertie),
               propertie
             }))
         ]

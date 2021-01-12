@@ -3,7 +3,7 @@
     ? (module.exports = factory())
     : typeof define === 'function' && define.amd
     ? define(factory)
-    : ((global = global || self), (global.globalFeatures = factory()));
+    : ((global = global || self), (global.getGlobalFeatures = factory()));
 })(this, function() {
   const isEs = name =>
     [
@@ -63,7 +63,6 @@
   const isWebkit = name => /webkit/i.test(name);
   const isIgnoreInstance = name =>
     [
-      '0',
       'window',
       'self',
       'parent',
@@ -101,18 +100,24 @@
       .sort(byName)
       .forEach(name => {
         const value = window[name];
-        features[name] = {};
+        const type = Object.prototype.toString
+          .call(value)
+          .slice(8, -1)
+          .toLowerCase();
 
-        if (typeof value === 'function') {
-          features[name].properties = Object.getOwnPropertyNames(value || {})
-            .filter(name => !isIgnoreStatic(name))
-            .sort(byName);
+        features[name] = { type };
+
+        if (type === 'function') {
           features[name].prototype = Object.getOwnPropertyNames(
             value.prototype || {}
           )
             .filter(name => !isIgnorePropertie(name))
             .sort(byName);
-        } else if (value !== null && typeof value === 'object') {
+
+          features[name].static = Object.getOwnPropertyNames(value || {})
+            .filter(name => !isIgnoreStatic(name))
+            .sort(byName);
+        } else if (type === 'object') {
           features[name].properties = Object.getOwnPropertyNames(value || {})
             .filter(name => !isIgnorePropertie(name))
             .sort(byName);
