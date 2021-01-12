@@ -53,6 +53,7 @@ function render(element, hostGlobalFeatures, sandboxGlobalFeatures, filter) {
 
 const sandbox = document.createElement('web-sandbox');
 const iframe = document.createElement('iframe');
+iframe.style.display = 'none';
 document.body.appendChild(sandbox);
 document.body.appendChild(iframe);
 
