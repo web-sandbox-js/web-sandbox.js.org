@@ -1,58 +1,7 @@
-importScript('/docs/web-compat/global-features.js').then(globalFeatures => {
-  const sandbox = document.querySelector('web-sandbox[name=api]');
-  console.time('globalFeatures');
-  const hostGlobalFeatures = globalFeatures(window);
-  console.timeEnd('globalFeatures');
-  const sandboxGlobalFeatures = globalFeatures(sandbox.contentWindow);
+/* eslint-disable no-use-before-define, no-undef, no-restricted-globals, no-console  */
+import globalFeatures from './global-features.js';
 
-  const hashchange = () => {
-    const url = location.hash.replace(/#!\//, '') || '?compat=all';
-    const search = new URLSearchParams(url);
-    const filter = search.get('compat');
-    console.log(hostGlobalFeatures);
-    render(
-      document.getElementById('list'),
-      hostGlobalFeatures,
-      sandboxGlobalFeatures,
-      filter
-    );
-  };
-  hashchange();
-  window.addEventListener('hashchange', hashchange);
-});
-
-function importScript(url) {
-  if (typeof module !== 'object') {
-    window.exports = {};
-    window.module = { exports };
-  }
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.addEventListener('load', () => {
-      resolve(window.module.exports);
-    });
-    script.addEventListener('error', e => {
-      reject(e);
-    });
-    script.src = url;
-    document.head.appendChild(script);
-  });
-}
-
-function render(
-  element,
-  hostGlobalFeatures,
-  sandboxGlobalFeatures,
-  compat = 'all'
-) {
-  const filter = name => {
-    if (compat === 'all') {
-      return true;
-    }
-    return (
-      { true: true, false: false }[compat] === !!sandboxGlobalFeatures[name]
-    );
-  };
+function render(element, hostGlobalFeatures, sandboxGlobalFeatures, filter) {
   element.innerHTML = Object.entries(hostGlobalFeatures)
     .filter(([name]) => filter(name))
     .map(
@@ -101,3 +50,73 @@ function render(
     )
     .join('');
 }
+
+const sandbox = document.createElement('web-sandbox');
+const iframe = document.createElement('iframe');
+document.body.appendChild(sandbox);
+document.body.appendChild(iframe);
+
+const hostGlobalFeatures = globalFeatures(iframe.contentWindow);
+console.log(hostGlobalFeatures);
+const sandboxGlobalFeatures = globalFeatures(sandbox.contentWindow);
+
+// document.body.removeChild(sandbox);
+window.sandbox = sandbox.contentWindow;
+document.body.removeChild(iframe);
+
+const cores = [
+  'Document',
+  'cancelAnimationFrame',
+  'CharacterData',
+  'clearInterval',
+  'clearTimeout',
+  'close',
+  'console',
+  'customElements',
+  'Document',
+  'DocumentFragment',
+  'Element',
+  'Event',
+  'EventTarget',
+  'getComputedStyle',
+  'HTMLElement',
+  'location',
+  'NamedNodeMap',
+  'Navigator',
+  'Node',
+  'NodeList',
+  'requestAnimationFrame',
+  'setInterval',
+  'setTimeout',
+  'ShadowRoot',
+  'Storage',
+  'Text',
+  'UIEvent',
+  'Window'
+];
+
+const hashchange = () => {
+  const url = location.hash.replace(/#!\//, '');
+  const search = new URLSearchParams(url);
+  console.log(hostGlobalFeatures);
+  render(
+    document.getElementById('list'),
+    hostGlobalFeatures,
+    sandboxGlobalFeatures,
+    name => {
+      let result = true;
+      const map = { true: true, false: false };
+      if (search.has('core')) {
+        result = map[search.get('core')] === cores.includes(name);
+      }
+
+      if (result && search.has('compat')) {
+        result = map[search.get('compat')] === !!sandboxGlobalFeatures[name];
+      }
+
+      return result;
+    }
+  );
+};
+hashchange();
+window.addEventListener('hashchange', hashchange);
