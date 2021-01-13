@@ -9,9 +9,7 @@ function render(element, hostGlobalFeatures, sandboxGlobalFeatures, filter) {
       <details open compat="${compat}">
         <summary>
           <strong>${compat ? '✔︎' : '✖︎'}</strong>
-          <a href="https://developer.mozilla.org/en-US/docs/Web/API/${name}">
-            ${name}
-          </a>  
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/${name}">${name}</a>  
         </summary>
         <ul>
         ${[
@@ -38,9 +36,7 @@ function render(element, hostGlobalFeatures, sandboxGlobalFeatures, filter) {
             ({ prefix, propertie, compat }) =>
               `<li compat="${compat}">
                 <strong>${compat ? '✔︎' : '✖︎'}</strong>
-                <a href="https://developer.mozilla.org/en-US/docs/Web/API/${name}/${propertie}">
-                ${prefix}${propertie}
-                </a>
+                <a href="https://developer.mozilla.org/en-US/docs/Web/API/${name}/${propertie}">${prefix}${propertie}</a>
               </li>`
           )
           .join('')}
@@ -66,9 +62,17 @@ window.sandbox = sandbox.contentWindow;
 document.body.removeChild(iframe);
 
 const cores = [
+  // 'Audio',
+  'atob',
+  'Animation',
+  'addEventListener',
+  'btoa',
   'Document',
+  'dispatchEvent',
   'cancelAnimationFrame',
   'CharacterData',
+  'CSS',
+  'CanvasRenderingContext2D',
   'clearInterval',
   'clearTimeout',
   'close',
@@ -79,21 +83,37 @@ const cores = [
   'Element',
   'Event',
   'EventTarget',
+  'fetch',
+  'XMLHttpRequest',
   'getComputedStyle',
   'HTMLElement',
+  'HTMLFormElement',
+  'SVGElement',
+  'History',
   'location',
+  'localStorage',
   'NamedNodeMap',
   'Navigator',
+  'navigator',
   'Node',
   'NodeList',
   'requestAnimationFrame',
+  'removeEventListener',
   'setInterval',
   'setTimeout',
+  'self',
   'ShadowRoot',
   'Storage',
+  'ServiceWorker',
   'Text',
-  'UIEvent',
+  'Worker',
+  'WebSocket',
+  // 'WebGL2RenderingContext',
+  'WebAssembly',
   'Window'
+  // ...Object.getOwnPropertyNames(window).filter(
+  //   name => /^(on)[\w]+/.test(name) && !/webkit/i.test(name)
+  // )
 ];
 
 const hashchange = () => {
