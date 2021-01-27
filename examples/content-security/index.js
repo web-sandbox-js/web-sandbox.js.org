@@ -13,7 +13,7 @@ document.body.innerHTML = `
   <table>
     <thead>
       <tr>
-        <th>Test case</th>
+        <th>ID</th>
         <th>Name</th>
         <th>Payload</th>
         <th>Result</th>
@@ -351,29 +351,4 @@ runTest(
   true
 );
 
-runTest(
-  ['localStorage'],
-  el => {
-    const PARENT_VALUE = 'parent-value';
-    const CHILD_VALUE = 'child-value';
 
-    localStorage.test = PARENT_VALUE;
-
-    const sandbox = document.createElement('web-sandbox');
-    sandbox.name = 'child2';
-    sandbox.srcdoc = `
-      localStorage.test = ${JSON.stringify(CHILD_VALUE)};
-    `;
-
-    el.appendChild(sandbox);
-
-    if (localStorage.test !== PARENT_VALUE) {
-      throw new Error(`parent: Local storage is contaminated`);
-    }
-
-    // if (sandbox.contentWindow.localStorage.test !== CHILD_VALUE) {
-    //   throw new Error(`child: Local storage is contaminated`);
-    // }
-  },
-  false
-);
