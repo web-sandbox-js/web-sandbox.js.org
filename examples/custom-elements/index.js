@@ -1,52 +1,46 @@
-document.body.innerHTML = `<my-element name="hello"></my-element>`;
+document.body.innerHTML = `
+  <h2>examples1</h2>
+  <my-element name="hello"></my-element>
+  <h2>examples2</h2>
+  <ul is="expanding-list">
+      <li>UK
+          <ul>
+              <li>Yorkshire
+                  <ul>
+                      <li>Leeds
+                          <ul>
+                              <li>Train station</li>
+                              <li>Town hall</li>
+                              <li>Headrow</li>
+                          </ul>
+                      </li>
+                      <li>Bradford</li>
+                      <li>Hull</li>
+                  </ul>
+              </li>
+          </ul>
+      </li>
+      <li>USA
+          <ul>
+              <li>California
+                  <ul>
+                      <li>Los Angeles</li>
+                      <li>San Francisco</li>
+                      <li>Berkeley</li>
+                  </ul>
+              </li>
+              <li>Nevada</li>
+              <li>Oregon</li>
+          </ul>
+      </li>
+  </ul>
+`;
 
-class MyElement extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-
-    const changeNameButton = document.createElement('button');
-    changeNameButton.textContent = 'changeName()';
-    changeNameButton.addEventListener('click', () => {
-      this.changeName();
-    });
-    this.shadowRoot.appendChild(changeNameButton);
-  }
-
-  changeName() {
-    this.name = Math.random()
-      .toString(36)
-      .slice(-6);
-  }
-
-  get name() {
-    return this.getAttribute('name');
-  }
-
-  set name(value) {
-    this.setAttribute('name', value);
-  }
-
-  connectedCallback() {
-    const element = document.createElement('p');
-    element.textContent = `connectedCallback`;
-    this.shadowRoot.appendChild(element);
-  }
-
-  adoptedCallback() {
-    const element = document.createElement('p');
-    element.textContent = `adoptedCallback`;
-    this.shadowRoot.appendChild(element);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    const element = document.createElement('p');
-    element.textContent = `attributeChanged: name ${name}; oldValue ${oldValue}; newValue ${newValue}`;
-    this.shadowRoot.appendChild(element);
-  }
-
-  static get observedAttributes() {
-    return ['name'];
-  }
+function importScript(url) {
+  const script = document.createElement('script');
+  script.src = url;
+  document.head.appendChild(script);
 }
-customElements.define('my-element', MyElement);
+
+importScript('/examples/custom-elements/my-element.js');
+importScript('/examples/custom-elements/expanding-list.js');
