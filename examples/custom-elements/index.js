@@ -3,36 +3,36 @@ document.body.innerHTML = `
   <my-element name="hello"></my-element>
   <h2>examples2</h2>
   <ul is="expanding-list">
-      <li>UK
+    <li>UK
+      <ul>
+        <li>Yorkshire
           <ul>
-              <li>Yorkshire
-                  <ul>
-                      <li>Leeds
-                          <ul>
-                              <li>Train station</li>
-                              <li>Town hall</li>
-                              <li>Headrow</li>
-                          </ul>
-                      </li>
-                      <li>Bradford</li>
-                      <li>Hull</li>
-                  </ul>
-              </li>
+            <li>Leeds
+              <ul>
+                <li>Train station</li>
+                <li>Town hall</li>
+                <li>Headrow</li>
+              </ul>
+            </li>
+            <li>Bradford</li>
+            <li>Hull</li>
           </ul>
-      </li>
-      <li>USA
+        </li>
+      </ul>
+    </li>
+    <li>USA
+      <ul>
+        <li>California
           <ul>
-              <li>California
-                  <ul>
-                      <li>Los Angeles</li>
-                      <li>San Francisco</li>
-                      <li>Berkeley</li>
-                  </ul>
-              </li>
-              <li>Nevada</li>
-              <li>Oregon</li>
+            <li>Los Angeles</li>
+            <li>San Francisco</li>
+            <li>Berkeley</li>
           </ul>
-      </li>
+        </li>
+        <li>Nevada</li>
+        <li>Oregon</li>
+      </ul>
+    </li>
   </ul>
 `;
 
