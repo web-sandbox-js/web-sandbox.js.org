@@ -1,41 +1,30 @@
-const callback = function(event) {
-  console.log(event.composedPath());
-  event.stopPropagation();
-  event.preventDefault();
-  const target = event.target;
-  console.log(target);
-  const elem = document.createElement('p');
-  elem.innerHTML = 'chicked';
-  document.body.appendChild(elem);
-  window.setTimeout(() => {
-    console.log(event.target);
-  }, 1000);
-};
+document.body.innerHTML = `
+  <div id="ball"></div>
+  <div id="box" title="Chilk Me"></div>
+  <style>
+    #ball {
+      width: 32px;
+      height: 32px;
+      border-radius: 32px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      background: #003cb1;
+      transition: left 0.3s, top 0.3s;
+    }
+    #box {
+      width: 100%;
+      height: 300px;
+      background: #fafbfc;
+    }
+  </style>
+`;
 
-const add = document.createElement('button');
-add.innerHTML = 'addEventListener';
-add.addEventListener('click', function(event) {
-  document.addEventListener('click', callback);
-});
-document.body.appendChild(add);
-
-const remove = document.createElement('button');
-remove.innerHTML = 'removeEventListener';
-remove.addEventListener('click', function(event) {
-  document.removeEventListener('click', callback);
-});
-document.body.appendChild(remove);
-
-const log = document.createElement('span');
-const input = document.createElement('input');
-document.body.appendChild(input);
-document.body.appendChild(log);
-input.addEventListener('input', function(event) {
-  log.textContent = event.target.value;
-});
-
-window.addEventListener('DOMContentLoaded', function(event) {
-  console.log('DOMContentLoaded');
-  console.log(event);
-  console.log(this);
+const ball = document.getElementById('ball');
+const box = document.getElementById('box');
+box.addEventListener('mousedown', function(e) {
+  const moveX = e.clientX;
+  const moveY = e.clientY;
+  ball.style.left = `${moveX}px`;
+  ball.style.top = `${moveY}px`;
 });
