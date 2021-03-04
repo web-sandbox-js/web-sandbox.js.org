@@ -17,9 +17,8 @@
         header,
         main,
         footer {
-            padding: 0 10px;
             max-width: 700px;
-            margin: auto;
+            margin: 0 auto;
             text-align: center;
         }
 
@@ -27,22 +26,18 @@
             padding-bottom: 40px;
         }
 
-        .logo {
-            margin-top: 30px;
-            font-size: 8em;
-        }
-
-        .logo::after {
-            content: '無';
-            /* ☂️  */
+        .about {
+            padding: 40px 10px;
+            border-radius: 10px 10px 0 0;
+            background: #003cb1;
+            color: #FFF;
         }
 
         h1 {
             position: relative;
-            margin: 20px 0 0 0;
+            margin-top: 0;
             font-size: 2.2em;
             letter-spacing: 4px;
-            color: #003cb1;
             font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
         }
 
@@ -51,16 +46,15 @@
             bottom: 20px;
             font-size: 12px;
             font-weight: 500;
-            color: #f44336;
+            color: #ffac85;
             letter-spacing: 1px;
         }
 
         h2 {
-            margin: 5px 0 80px 0;
+            margin-top: 5px;
+            margin-bottom: 0;
             line-height: 1.2em;
             font-size: 1em;
-            color: #333;
-            font-weight: 300;
         }
 
         .examples,
@@ -102,7 +96,6 @@
 
         .main-button[disabled] {
             cursor: default;
-            opacity: 0.5;
         }
 
         .main-button:focus {
@@ -123,22 +116,14 @@
             height: 15em;
             min-height: 4.5em;
             padding: 10px;
-            border: 1px solid #acacac;
-            background-color: rgba(255, 255, 255, .5);
+            border: none 0;
+            outline: none;
+            background-color: rgba(255, 255, 255, .9);
             border-radius: 10px;
         }
 
         [id=source-text]:focus {
             background-color: #FFF;
-        }
-
-        web-sandbox {
-            text-align: left;
-            width: 100%;
-            min-height: 15em;
-            padding: 10px;
-            border: 3px dashed #acacac;
-            border-radius: 10px;
         }
 
         web-sandbox:not(:defined) {
@@ -148,21 +133,55 @@
         web-sandbox:defined {
             display: inline-block;
         }
+
+        .sandbox-view {
+            padding: 20px;
+            background: #003cb1;
+        }
+        .code {
+            padding: 20px;
+            background: #003cb1;
+            border-radius: 0 0 10px 10px;
+        }
+        web-sandbox[name=sandbox-evaluate] {
+            text-align: left;
+            width: 100%;
+            min-height: 15em;
+            padding: 10px;
+            border: 3px dashed #acacac;
+            border-radius: 10px;
+            background: #f5f5f5;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="logo"></div>
-        <h1>WebSandbox.js<sup>Alpha</sup></h1>
-        <h2>JavaScript's DOM Sandbox</h2>
+        <div class="about">
+            <h1>WebSandbox.js<sup>Alpha</sup></h1>
+            <h2>Web virtualization environment based on javascript</h2>
+        </div>
     </header>
 
     <main>
+        <div class="sandbox-view">
+            <web-sandbox
+                name="sandbox-evaluate"
+                title="WebSandbox View"
+                csp="
+                    script-src 'self';
+                    navigate-to 'self' web-sandbox.js.org/examples;
+                    sandbox allow-top-navigation allow-scripts
+                "
+            >
+            </web-sandbox>
+        </div>
         <div class="code">
             <textarea autofocus="autofocus" placeholder="Enter your javascript" autocomplete="off" spellcheck="false"
-                id="source-text" rows="20" cols="80"></textarea>
+                id="source-text"></textarea>
         </div>
+        <div class="buttons"><button disabled class="main-button" id="render-button">Render To &lt;web-sandbox
+            /&gt;</button></div>
         <div class="examples">
             Examples:
             <button data-example="basic">Basic</button>
@@ -177,11 +196,6 @@
             <button data-example="lit-element-todomvc">litElement TodoMVC</button>
             <button data-example="mutation-observer">MutationObserver</button>
         </div>
-        <div class="buttons"><button disabled class="main-button" id="render-button">Render To &lt;web-sandbox
-                /&gt;</button></div>
-        <div class="sandbox-view">
-            <web-sandbox name="sandbox-evaluate" title="WebSandbox View" csp="sandbox allow-import-scripts allow-top-navigation"></web-sandbox>
-        </div>
     </main>
 
     <footer>
@@ -190,6 +204,9 @@
         </small>
         <p>
             <a href="/docs/web-compat">Web Compat Docs</a>
+        </p>
+        <p>
+            <web-sandbox srcdoc="document.body.innerHTML = `sugarpie.tang${'@'}gmail.com`"></web-sandbox>
         </p>
     </footer>
 
