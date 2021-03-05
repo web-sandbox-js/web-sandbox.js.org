@@ -24,20 +24,23 @@
         }
 
         main {
+            position: relative;
+            margin-top: -10px;
             background: #FFF;
             box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-            border-radius: 0 0 64px 64px;
+            border-radius: 10px 10px 64px 64px;
             color: rgb(32, 33, 36);
             font-family: Roboto, system-ui, "PingFang SC", STHeiti, sans-serif;
         }
 
         footer {
+            padding-top: 20px;
             padding-bottom: 40px;
         }
 
         .about {
-            padding: 40px 10px;
-            border-radius: 4px 4px 0 0;
+            padding: 40px 10px 50px 10px;
+            border-radius: 10px 10px 0 0;
             background: #003cb1;
             color: #FFF;
         }
@@ -45,17 +48,18 @@
         h1 {
             position: relative;
             margin-top: 0;
-            font-size: 2.2em;
-            letter-spacing: 4px;
+            font-size: 2em;
             font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
         }
 
         h1 sup {
             position: absolute;
             bottom: 20px;
+            padding: 1px 5px;
             font-size: 12px;
             font-weight: 500;
-            color: #ffac85;
+            color: #FFF;
+            border-radius: 4px;
             letter-spacing: 1px;
         }
 
@@ -164,7 +168,7 @@
         web-sandbox[name=sandbox-evaluate] {
             text-align: left;
             width: 100%;
-            min-height: 15em;
+            min-height: 10em;
             padding: 10px;
             border: 3px dashed #acacac;
             border-radius: 10px;
@@ -213,7 +217,7 @@
     <header>
         <div class="about">
             <h1>WebSandbox.js<sup>Alpha</sup></h1>
-            <h2>Secure and high-performance Web virtualization environment</h2>
+            <h2>Safe and lightweight Web virtualization library</h2>
         </div>
     </header>
 
@@ -256,7 +260,7 @@
 
     <footer>
         <p>
-            <a href="/docs/web-compat">Web Compat Docs</a> | <a href="/examples/single-spa">❤️ SingleSpa</a>
+            <a href="/docs/web-compat">Web Compat Docs</a>
         </p>
         <p>
             <web-sandbox srcdoc="document.body.innerHTML = `sugarpie.tang${'@'}gmail.com`"></web-sandbox>
