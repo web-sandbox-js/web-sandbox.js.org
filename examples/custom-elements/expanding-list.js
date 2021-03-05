@@ -61,4 +61,6 @@ class ExpandingList extends HTMLUListElement {
 }
 
 // Define the new element
-customElements.define('expanding-list', ExpandingList, { extends: 'ul' });
+if (!customElements.get('expanding-list')) {
+  customElements.define('expanding-list', ExpandingList, { extends: 'ul' });
+}

@@ -12,8 +12,10 @@ class FancyButton extends HTMLButtonElement {
     div.style.left = `${x - div.clientWidth / 2}px`;
     div.style.backgroundColor = 'currentColor';
     div.classList.add('run');
-    div.addEventListener('transitionend', e => div.remove());
+    div.addEventListener('transitionend', () => div.remove());
   }
 }
 
-customElements.define('fancy-button', FancyButton, { extends: 'button' });
+if (!customElements.get('fancy-button')) {
+  customElements.define('fancy-button', FancyButton, { extends: 'button' });
+}

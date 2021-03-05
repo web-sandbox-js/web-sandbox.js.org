@@ -34,6 +34,14 @@ document.body.innerHTML = `
       </ul>
     </li>
   </ul>
+  <style>
+  [is=expanding-list]:not(:defined), [is=expanding-list]:not([web-sandbox\\.defined]) {
+    display: none;
+  }
+  [is=expanding-list]:defined, [is=expanding-list][web-sandbox\\.defined] {
+    display: block;
+  }
+  </style>
 `;
 
 function importScript(url) {

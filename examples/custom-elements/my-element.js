@@ -47,4 +47,7 @@ class MyElement extends HTMLElement {
     return ['name'];
   }
 }
-customElements.define('my-element', MyElement);
+
+if (!customElements.get('my-element')) {
+  customElements.define('my-element', MyElement);
+}
