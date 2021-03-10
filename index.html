@@ -223,7 +223,10 @@
 
     <main>
         <div class="sandbox-view">
-            <web-sandbox name="sandbox-evaluate" title="WebSandbox View" csp="
+            <web-sandbox
+                name="sandbox-evaluate"
+                title="WebSandbox View"
+                csp="
                     script-src 'self';
                     navigate-to 'self' web-sandbox.js.org/examples;
                     sandbox allow-top-navigation allow-scripts
@@ -238,14 +241,16 @@
                     <option value="basic">Basic</option>
                     <option value="script-element">Script Element</option>
                     <option value="event">Event</option>
+                    <option value="debug">Debug</option>
+                    <option value="mutation-observer">MutationObserver</option>
                     <option value="custom-elements">Custom Elements</option>
                     <option value="css-security">CSS Security</option>
                     <option value="content-security">Content Security</option>
                     <option value="canvas">Canvas</option>
                     <option value="systemjs">Systemjs</option>
                     <option value="vue-todomvc">Vue.js TodoMVC</option>
+                    <option value="react-todomvc">React.js TodoMVC</option>
                     <option value="lit-element-todomvc">litElement TodoMVC</option>
-                    <option value="mutation-observer">MutationObserver</option>
                 </select>
             </div>
 
@@ -262,9 +267,11 @@
         <p>
             <a href="/docs/web-compat">Web Compat Docs</a>
         </p>
-        <p>
-            <web-sandbox srcdoc="document.body.innerHTML = `sugarpie.tang${'@'}gmail.com`"></web-sandbox>
-        </p>
+        <footer>
+            <p>
+                <a href="/docs/web-compat">Web Compat Docs</a>
+            </p>
+        </footer>
     </footer>
 
     <script type="module" src="/dist/web-sandbox.umd.js"></script>
