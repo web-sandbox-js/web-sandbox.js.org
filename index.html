@@ -227,9 +227,10 @@
                 name="sandbox-evaluate"
                 title="WebSandbox View"
                 csp="
-                    script-src 'self';
+                    default-src 'none';
+                    script-src 'self' 'unsafe-inline' 'unsafe-eval';
+                    style-src * 'unsafe-inline';
                     navigate-to 'self' web-sandbox.js.org/examples;
-                    sandbox allow-top-navigation allow-scripts
                 ">
             </web-sandbox>
         </div>
@@ -267,6 +268,11 @@
         <p>
             <a href="/docs/web-compat">Web Compat Docs</a>
         </p>
+        <footer>
+            <p>
+                <a href="/docs/web-compat">Web Compat Docs</a>
+            </p>
+        </footer>
     </footer>
 
     <script type="module" src="/dist/web-sandbox.umd.js"></script>
