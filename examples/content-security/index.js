@@ -358,7 +358,7 @@ runTest(
       const div = document.createElement('div');
       div.appendChild({});
     } catch(error) {
-      if (error instanceof Object) {
+      if (!(error instanceof Object)) {
         throw Error('The escape!'); 
       }
     }
