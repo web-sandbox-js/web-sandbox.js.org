@@ -13,5 +13,5 @@ app.src = 'import:neptune';
 document.body.appendChild(app);
 
 const loader = document.createElement('script');
-loader.src = '/examples/systemjs/dist/s.min.js';
+loader.src = 'https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/s.js';
 document.body.appendChild(loader);
