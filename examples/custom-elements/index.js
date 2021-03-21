@@ -2,6 +2,14 @@ document.body.innerHTML = `
   <h2>examples1</h2>
   <my-element name="hello"></my-element>
   <h2>examples2</h2>
+  <style>
+    ul[is=expanding-list]:not(:defined) {
+      display: none;
+    }
+    ul[is=expanding-list]:defined {
+      display: block;
+    }
+  </style>
   <ul is="expanding-list">
     <li>UK
       <ul>
@@ -34,14 +42,6 @@ document.body.innerHTML = `
       </ul>
     </li>
   </ul>
-  <style>
-  [is=expanding-list]:not(:defined), [is=expanding-list]:not([web-sandbox\\.defined]) {
-    display: none;
-  }
-  [is=expanding-list]:defined, [is=expanding-list][web-sandbox\\.defined] {
-    display: block;
-  }
-  </style>
 `;
 
 function importScript(url) {
