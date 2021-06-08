@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>WebSandbox.js</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 10px;
+            background: rgb(248 249 250);
+        }
+
+        header,
+        main,
+        footer {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        main {
+            position: relative;
+            margin-top: -10px;
+            background: #FFF;
+            box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+            border-radius: 10px 10px 64px 64px;
+            color: rgb(32, 33, 36);
+            font-family: Roboto, system-ui, "PingFang SC", STHeiti, sans-serif;
+        }
+
+        footer {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        .about {
+            padding: 40px 10px 50px 10px;
+            border-radius: 10px 10px 0 0;
+            background: #003cb1;
+            color: #FFF;
+        }
+
+        h1 {
+            position: relative;
+            margin-top: 0;
+            font-size: 2em;
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        h1 sup {
+            position: absolute;
+            bottom: 20px;
+            padding: 1px 5px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #FFF;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            margin-top: 5px;
+            margin-bottom: 0;
+            line-height: 1.2em;
+            font-size: 1em;
+        }
+
+        .examples {
+            color: #666;
+        }
+
+        .examples button {
+            color: #666;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .examples button {
+            margin-bottom: 5px;
+        }
+
+        .buttons {
+            padding: 20px 0;
+        }
+
+        .main-button {
+            padding: 0.75em 1.5em;
+            border-radius: 2em;
+            display: inline-block;
+            transition: all 0.15s ease;
+            box-sizing: border-box;
+            margin: 1em 0;
+            font-size: 1em;
+            font-weight: normal;
+            letter-spacing: 0.1em;
+            border: 1px solid #003cb1;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #003cb1;
+            color: #FFF;
+            outline: none;
+        }
+
+        .main-button:hover {
+            box-shadow: rgba(26, 115, 232, 0.4) 0px 0px 0px 2px;
+        }
+
+        .main-button[disabled] {
+            cursor: default;
+        }
+
+        .main-button:focus {
+            border: 1px solid #FFF;
+            opacity: 1;
+        }
+
+        footer {
+            font-size: 12px;
+            color: #acacac;
+            font-weight: normal;
+        }
+
+        footer a {
+            color: rgb(95, 99, 104);
+        }
+
+        [id=source-text] {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            height: 15em;
+            min-height: 4.5em;
+            margin-top: 20px;;
+            padding: 10px;
+            border: none 0;
+            outline: none;
+            background-color: rgb(241, 243, 244);
+            border-radius: 10px;
+        }
+
+        [id=source-text]:focus {
+            box-shadow: rgba(26, 115, 232, 0.4) 0px 0px 0px 2px;
+        }
+
+        web-sandbox:not(:defined) {
+            display: none;
+        }
+
+        web-sandbox:defined {
+            display: inline-block;
+        }
+
+        .sandbox-view {
+            padding: 20px;
+        }
+
+        .code {
+            padding: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        web-sandbox[name=sandbox-evaluate] {
+            text-align: left;
+            width: 100%;
+            min-height: 10em;
+            padding: 10px;
+            border: 3px dashed #acacac;
+            border-radius: 10px;
+            background-color: rgb(241, 243, 244);
+        }
+
+        .examples-select {
+            -webkit-appearance: none;
+            background: url('/examples/arrow_down.svg') 182px center no-repeat;
+            background-color: rgb(241, 243, 244);
+            background-size: 10px;
+            border: none;
+            border-radius: 4px;
+            color: rgb(32, 33, 36);
+            cursor: pointer;
+            max-width: 100%;
+            outline: none;
+            padding-bottom: 6px;
+            box-shadow: rgb(241, 243, 244) 0px 0px 0px 2px;
+            padding-inline-end: 21px;
+            padding-inline-start: 8px;
+            padding-top: 6px;
+            width: 200px;
+        }
+
+        .examples-select:-webkit-any(option, optgroup) {
+            background-color: #FFF;
+        }
+
+        .examples-select[disabled] {
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        .examples-select:focus {
+            box-shadow: rgba(26, 115, 232, 0.4) 0px 0px 0px 2px;
+        }
+
+        .examples-select:active {
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="about">
+            <h1>WebSandbox.js<sup>Alpha</sup></h1>
+            <h2>Safe and lightweight Web virtualization library</h2>
+        </div>
+    </header>
+
+    <main>
+        <div class="sandbox-view">
+            <web-sandbox
+                name="sandbox-evaluate"
+                title="WebSandbox View"
+                sandboxed
+                csp="
+                    default-src 'none';
+                    script-src 'self' 'unsafe-inline' 'unsafe-eval' cdn.jsdelivr.net;
+                    style-src * 'unsafe-inline' cdn.jsdelivr.net;
+                    navigate-to 'self' web-sandbox.js.org;
+                ">
+            </web-sandbox>
+        </div>
+
+        <div class="code">
+            <div class="examples">
+                <select class="examples-select" id="examples-select">
+                    <option value="" disabled selected>Select Examples</option>
+                    <option value="basic">Basic</option>
+                    <option value="script-element">Script Element</option>
+                    <option value="event">Event</option>
+                    <option value="debug">Debug</option>
+                    <option value="mutation-observer">MutationObserver</option>
+                    <option value="custom-elements">Custom Elements</option>
+                    <option value="css-security">CSS Security</option>
+                    <option value="content-security">Content Security</option>
+                    <option value="canvas">Canvas</option>
+                    <option value="child-websandbox">Child WebSandbox</option>
+                    <option value="systemjs">Systemjs</option>
+                    <option value="vue-todomvc">Vue.js TodoMVC</option>
+                    <option value="react-todomvc">React.js TodoMVC</option>
+                    <option value="lit-element-todomvc">litElement TodoMVC</option>
+                </select>
+            </div>
+
+            <textarea placeholder="Enter your javascript" autocomplete="off" spellcheck="false"
+                id="source-text"></textarea>
+
+            <div class="buttons">
+                <button disabled class="main-button" id="render-button">Evaluate</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>
+            <a href="/docs/web-compat">Web Compat Docs</a>
+        </p>
+    </footer>
+
+    <script type="module" src="/dist/web-sandbox.umd.js"></script>
+    <!-- <script type="module" src="/src/index.js"></script> -->
+    <script type="module">
+        const sourceInput = document.getElementById('source-text');
+        const examplesEelect = document.getElementById('examples-select');
+        const renderButton = document.getElementById('render-button');
+        const sandbox = document.querySelector('web-sandbox[name=sandbox-evaluate]');
+        const LOCAL_STORGE_KEY = 'WEB_SANDBOX_SCRIPTS';
+        const EXAMPLES_HASH = '#/scripts';
+
+        customElements.whenDefined('web-sandbox').then(() => {
+            renderButton.removeAttribute('disabled');
+        });
+
+        const setSourceInputValue = () => {
+            if (window.location.hash.startsWith(EXAMPLES_HASH)) {
+                const url = window.location.hash.replace(`${EXAMPLES_HASH}/`, '');
+                innerExamples(window.decodeURI(url));
+            } else {
+                sourceInput.value = localStorage.getItem(LOCAL_STORGE_KEY) || '';
+            }
+        };
+
+        const innerExamples = (url) => {
+            fetch(url).then(res => {
+                if (!res.ok) {
+                    throw Error([res.status, res.statusText, url].join(', '));
+                }
+                const jsContentTypeRegEx = /^(text|application)\/(x-)?javascript(;|$)/;
+                const contentType = res.headers.get('content-type');
+
+                if (!contentType || !jsContentTypeRegEx.test(contentType)) {
+                    throw Error(contentType);
+                }
+
+                return res.text().then(source => {
+                    if (source.indexOf('//# sourceURL=') < 0) {
+                        source += `\n//# sourceURL=${url}`;
+                    }
+                    sourceInput.value = source;
+                });
+
+            });
+        };
+
+        const init = () => {
+            renderButton.addEventListener('click', () => {
+                const source = sourceInput.value;
+                let result, output;
+
+                sandbox.scrollIntoView();
+
+                console.time('evaluate');
+                result = sandbox.evaluate(source);
+                console.timeEnd('evaluate');
+                localStorage.setItem(LOCAL_STORGE_KEY, source);
+            });
+
+            examplesEelect.addEventListener('change', (event) => {
+                const id = event.target.value;
+                if (id) {
+                    const url = window.encodeURI(new URL(`/examples/${id}/index.js`, document.baseURI).href);
+                    window.location.hash = `${EXAMPLES_HASH}/${url}`;
+                }
+            });
+
+            setSourceInputValue();
+            window.addEventListener('hashchange', setSourceInputValue);
+            window.sandbox = sandbox.contentWindow;
+        };
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+
+</html>
